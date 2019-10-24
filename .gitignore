@@ -1,0 +1,12 @@
+node_modules
+/gulp/
+/src/
+package.json
+package-lock.json
+gulpfile.js
+# asdf.php это просто файл для экспериментов
+asdf.php
+# игнорировать корневую папку uploads
+/uploads/
+# игнорировать папку с логами
+/admin/logs/
