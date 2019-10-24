@@ -1,3 +1,6 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Index_Model.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +54,8 @@
                         <div class="card">
                             <div class="card-header"><h3>Комментарии</h3></div>
 
+                            <?php $comments = \Index_Model\getAllComments(); if (isset($comments)): ?>
+                            <?php foreach ($comments as $data): ?>
                             <div class="card-body">
                               <div class="alert alert-success" role="alert">
                                 Комментарий успешно добавлен
@@ -59,14 +64,16 @@
                                 <div class="media">
                                   <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
                                   <div class="media-body">
-                                    <h5 class="mt-0">John Doe</h5> 
-                                    <span><small>12/10/2025</small></span>
+                                    <h5 class="mt-0"><?=$data["username"]?></h5> 
+                                    <span><small><?=$data["date"]?></small></span>
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati.
+                                        <?=$data["text"]?>
                                     </p>
                                   </div>
                                 </div>
                             </div>
+                            <?php endforeach ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 
