@@ -1,4 +1,5 @@
 node_modules
+vendor
 /gulp/
 /src/
 package.json
