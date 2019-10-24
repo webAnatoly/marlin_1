@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/Index_Model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Comments.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,12 +54,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Index_Model.php';
                         <div class="card">
                             <div class="card-header"><h3>Комментарии</h3></div>
 
-                            <?php $comments = \Index_Model\getAllComments(); if (isset($comments)): ?>
-                            <?php foreach ($comments as $data): ?>
                             <div class="card-body">
                               <div class="alert alert-success" role="alert">
                                 Комментарий успешно добавлен
                               </div>
+
+                                <?php $comments = \Comments\Comments::getAllComments(); if (isset($comments)): ?>
+                                <?php foreach ($comments as $data): ?>
 
                                 <div class="media">
                                   <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
@@ -71,9 +72,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Index_Model.php';
                                     </p>
                                   </div>
                                 </div>
+
+                                <?php endforeach ?>
+                                <?php endif; ?>
                             </div>
-                            <?php endforeach ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                 
