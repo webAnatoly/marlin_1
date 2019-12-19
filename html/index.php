@@ -1,5 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/Comments.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
+spl_autoload_register("myAutoloader");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,13 +60,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Comments.php';
                                 Комментарий успешно добавлен
                               </div>
 
-                                <?php $comments = \Comments\Comments::getAllComments(); if (isset($comments)): ?>
+                                <?php $comments = classes\Comments::getAllComments(); if (isset($comments)): ?>
                                 <?php foreach ($comments as $data): ?>
 
                                 <div class="media">
                                   <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
                                   <div class="media-body">
-                                    <h5 class="mt-0"><?=$data["username"]?></h5> 
+                                    <h5 class="mt-0"><?=$data["username"]?></h5>
                                     <span><small><?=$data["date"]?></small></span>
                                     <p>
                                         <?=$data["text"]?>
@@ -78,7 +79,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Comments.php';
                             </div>
                         </div>
                     </div>
-                
+
                     <div class="col-md-12" style="margin-top: 20px;">
                         <div class="card">
                             <div class="card-header"><h3>Оставить комментарий</h3></div>

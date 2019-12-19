@@ -1,6 +1,6 @@
 <?php
 
-namespace Comments;
+namespace classes;
 
 class Comments
 {
