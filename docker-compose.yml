@@ -1,0 +1,46 @@
+version: "3"
+services:
+    www:
+        build: ./php/
+        ports:
+        - "5555:80"
+        depends_on:
+            - db
+        volumes:
+            - ./html:/var/www/html
+        environment:
+            XDEBUG_CONFIG: remote_host=192.168.1.33
+
+    db:
+        image: mysql:8.0
+        ports:
+            - "3309:3306"
+        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode="" # установить кодировку базы данных по умолчанию
+        restart: always
+        environment:
+            MYSQL_USER: user
+            MYSQL_DATABASE: accountingDb
+            MYSQL_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: test
+        networks:
+            - default
+        container_name: mysql_my_marlin_project_1 # задаем свое имя контейнеру по нему будем обращаться из php скрипта к базе
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - ./conf:/etc/mysql/conf.d
+            - ./mysql:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        depends_on:
+        - db
+        ports:
+            - 5556:80
+        # environment:
+        #     MYSQL_USER: user
+        #     MYSQL_DATABASE: accountingDb
+        #     MYSQL_PASSWORD: test
+        #     MYSQL_ROOT_PASSWORD: test
+
+
+

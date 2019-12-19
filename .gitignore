@@ -2,6 +2,8 @@ node_modules
 vendor
 /gulp/
 /src/
+/mysql/
+/dump/
 package.json
 package-lock.json
 gulpfile.js
@@ -9,5 +11,7 @@ gulpfile.js
 asdf.php
 # игнорировать корневую папку uploads
 /uploads/
+/html/uploads/
 # игнорировать папку с логами
 /admin/logs/
+*.log
