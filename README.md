@@ -34,7 +34,7 @@ sudo chown -R username:groupname .
 Узнать место, где composer хранит ссылки на исполняемые файлы локально подключаемых пакетов (бинарники)
 docker run --rm -v $PWD:/app composer config bin-dir
 
-Чтобы PhpStorm корректно определял $_SERVER['DOCUMENT_ROOT'] нужно чтобы корень проекта открытого в шторме одновременно являлся корнем сайта.
-Т.е. например если сервер отдает файлы из папки html, то и корень проекта должен быть html папка. Тогда phpstorm будет корректно определять переменную $_SERVER['DOCUMENT_ROOT'].
-Жаль конечто, что нельзя в настройках phpstorm указать путь к $_SERVER['DOCUMENT_ROOT'].
-Т.е. получается для шторма $_SERVER['DOCUMENT_ROOT'] это всегда самая верхняя папка проекта.
+По умолчанию PhpStorm переменную $_SERVER['DOCUMENT_ROOT'] вычисляет как корень проекта.
+Изменить это можно в настройках. 
+File | Settings | Languages & Frameworks | PHP | Analysis | Include Analysis | $_SERVER['DOCUMENT_ROOT'] <указать путь к папке, которую нужно считать корнем сайта>
+https://www.jetbrains.com/help/phpstorm/php.html#include-analysis
