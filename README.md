@@ -38,3 +38,6 @@ docker run --rm -v $PWD:/app composer config bin-dir
 Изменить это можно в настройках. 
 File | Settings | Languages & Frameworks | PHP | Analysis | Include Analysis | $_SERVER['DOCUMENT_ROOT'] <указать путь к папке, которую нужно считать корнем сайта>
 https://www.jetbrains.com/help/phpstorm/php.html#include-analysis
+
+Как настроить подключение PhpStorm к базе данных запущенной в докер контейнере.
+[Подробнее](https://www.jetbrains.com/help/idea/running-a-dbms-image.html)
