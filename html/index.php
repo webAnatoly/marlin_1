@@ -1,6 +1,13 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
+$config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 spl_autoload_register("myAutoloader");
+$mysql = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE);
+if (!$mysql) {
+    exit;
+}
+//mysqli_close($mysql);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
