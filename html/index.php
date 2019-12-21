@@ -1,40 +1,14 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
-$config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 spl_autoload_register("myAutoloader");
-$mysql = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE);
-if (!$mysql) {
-    exit;
-}
-//mysqli_close($mysql);
 
 // Обработка POST запроса
 $name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
 $message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : "";
 
-// Если в базе данных еще нет таблицы, то создаем
-$sql = "CREATE TABLE IF NOT EXISTS COMMENTS (
-    id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) CHARACTER SET utf8,
-    message TEXT CHARACTER SET utf8
-)";
-
-if ($mysql->query($sql) !== true) {
-    die("Error creating table: " . $mysql->error);
-}
-
-// Подгатавливаем SQL запрос на сохранение коммента
-if ($stmt = $mysql->prepare("INSERT INTO COMMENTS (name, message) VALUES (?, ?)")) {
-    $stmt->bind_param("ss", $name, $message);
-} else {
-    die ("database error connection");
-}
-
-// Если имя и сообщение не пусты, то выполняем запись в базу
+// Если имя и сообщение не пусты, то записываем комментарий в базу
 if ($name !== "" && $message !== "") {
-    $stmt->execute();
-    $stmt->close();
-    $mysql->close();
+    classes\Comments::save($name, $message);
 }
 
 ?>
