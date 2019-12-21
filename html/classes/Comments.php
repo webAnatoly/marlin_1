@@ -9,24 +9,28 @@ class Comments
      */
     public static function getAllComments() {
 
-        // Пока тут просто массив. В будущем этот массив будет формироваться на основе данных получаемех из базы.
         $comments = array(
-            array(
-                "username" => "John Doe",
-                "date" => "12/10/2025",
-                "text" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati.",
-            ),
-            array(
-                "username" => "John Doe2",
-                "date" => "13/10/2026",
-                "text" => "Second Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati.",
-            ),
-            array(
-                "username" => "John Doe3",
-                "date" => "14/10/2027",
-                "text" => "Third Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati.",
-            ),
+//            array(
+//                "username" => "John Doe",
+//                "date" => "12/10/2025",
+//                "text" => "Текст коммента",
+//            ),
         );
+
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        $sql = "SELECT * FROM COMMENTS WHERE id < 1000";
+
+        $result = $mysql->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $comments[] = array('username'=>$row['name'], 'text'=>$row['message']);
+            }
+        }
+
+        $mysql->close();
 
         return $comments;
     }
@@ -39,7 +43,7 @@ class Comments
      */
     public static function save($username, $message)
     {
-        $config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
         // Если в базе данных еще нет таблицы, то создаем
@@ -61,6 +65,6 @@ class Comments
         } else {
             die ("database error connection");
         }
-        mysqli_close($mysql);
+        $mysql->close();
     }
 }
