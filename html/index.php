@@ -8,6 +8,35 @@ if (!$mysql) {
 }
 //mysqli_close($mysql);
 
+// Обработка POST запроса
+$name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
+$message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : "";
+
+// Если в базе данных еще нет таблицы, то создаем
+$sql = "CREATE TABLE IF NOT EXISTS COMMENTS (
+    id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) CHARACTER SET utf8,
+    message TEXT CHARACTER SET utf8
+)";
+
+if ($mysql->query($sql) !== true) {
+    die("Error creating table: " . $mysql->error);
+}
+
+// Подгатавливаем SQL запрос на сохранение коммента
+if ($stmt = $mysql->prepare("INSERT INTO COMMENTS (name, message) VALUES (?, ?)")) {
+    $stmt->bind_param("ss", $name, $message);
+} else {
+    die ("database error connection");
+}
+
+// Если имя и сообщение не пусты, то выполняем запись в базу
+if ($name !== "" && $message !== "") {
+    $stmt->execute();
+    $stmt->close();
+    $mysql->close();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,14 +121,14 @@ if (!$mysql) {
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
-                                <form action="/store" method="post">
+                                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
                                     <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlTextarea1" />
+                                    <label for="exampleFormControlInput1">Имя</label>
+                                    <input name="name" class="form-control" id="exampleFormControlInput1" />
                                   </div>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
-                                    <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                   </div>
                                   <button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
