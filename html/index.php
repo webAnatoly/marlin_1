@@ -2,15 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 
-// Обработка POST запроса
-$name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
-$message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : "";
-$isNewComment = false;
-
-// Если имя и сообщение не пусты, то записываем комментарий в базу
-if ($name !== "" && $message !== "") {
-    $isNewComment = classes\Comments::save($name, $message);
-}
+$isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
 
 ?>
 <!DOCTYPE html>
@@ -147,7 +139,7 @@ if ($name !== "" && $message !== "") {
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
-                                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                                <form action="post.php" method="post">
                                     <div class="form-group">
                                     <label for="exampleFormControlInput1">Имя</label>
                                     <input name="name" class="form-control" id="exampleFormControlInput1" />
