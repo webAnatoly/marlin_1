@@ -26,6 +26,9 @@ if ($name !== "" && $message !== "") {
 
     <!-- Styles -->
     <link href="css/app.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
 </head>
 <body>
     <div id="app">
