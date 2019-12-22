@@ -126,7 +126,7 @@ if ($name !== "" && $message !== "") {
                                 <?php foreach ($comments as $data): ?>
 
                                 <div class="media">
-                                  <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
+                                  <img src="img/no-user-small.jpg" class="mr-3" alt="..." width="64" height="64">
                                   <div class="media-body">
                                     <h5 class="mt-0"><?=$data["username"]?></h5>
                                     <span><small><?=$data["date"]?></small></span>
