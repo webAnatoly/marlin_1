@@ -26,6 +26,18 @@ if ($name !== "" && $message !== "") {
 
     <!-- Styles -->
     <link href="css/app.css" rel="stylesheet">
+    <style>
+      @keyframes anim-alert {
+        0%      { opacity: 0; }
+        50%    { opacity: 1; }
+        100%    { opacity: 0; }
+      }
+      .animate-alert {
+        -moz-animation: anim-alert 3s;
+        animation: anim-alert 5s;
+        opacity: 0;
+      }
+    </style>
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
@@ -69,7 +81,7 @@ if ($name !== "" && $message !== "") {
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-                              <div class="alert alert-success" role="alert">
+                              <div class="alert alert-success animate-alert" role="alert">
                                 Комментарий успешно добавлен
                               </div>
 
