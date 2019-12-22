@@ -47,7 +47,7 @@ class Comments
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
         // Если в базе данных еще нет таблицы, то создаем
-        $sql = "CREATE TABLE IF NOT EXISTS COMMENTS (
+        $sql = "CREATE TABLE IF NOT EXISTS Comments (
             id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) CHARACTER SET utf8,
             message TEXT CHARACTER SET utf8
@@ -58,7 +58,7 @@ class Comments
         }
 
         // Подгатавливаем SQL запрос на сохранение комментария
-        if ($stmt = $mysql->prepare("INSERT INTO COMMENTS (name, message) VALUES (?, ?)")) {
+        if ($stmt = $mysql->prepare("INSERT INTO Comments (name, message) VALUES (?, ?)")) {
             $stmt->bind_param("ss", $username, $message);
             $stmt->execute();
             $stmt->close();
