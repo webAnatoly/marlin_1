@@ -20,7 +20,7 @@ class Comments
         $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
-        $sql = "SELECT * FROM COMMENTS WHERE id < 1000";
+        $sql = "SELECT * FROM Comments WHERE id < 1000";
 
         $result = $mysql->query($sql);
 
@@ -39,7 +39,7 @@ class Comments
      * Записывает комментарий в базу. Если таблицы с комментариями нет то создает её.
      * @param   $username string
      * @param   $message string
-     * @return  void
+     * @return  true в случае успеха вернет true
      */
     public static function save($username, $message)
     {
@@ -66,5 +66,6 @@ class Comments
             die ("database error connection");
         }
         $mysql->close();
+        return true;
     }
 }

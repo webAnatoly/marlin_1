@@ -5,10 +5,11 @@ spl_autoload_register("myAutoloader");
 // Обработка POST запроса
 $name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
 $message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : "";
+$isNewComment = false;
 
 // Если имя и сообщение не пусты, то записываем комментарий в базу
 if ($name !== "" && $message !== "") {
-    classes\Comments::save($name, $message);
+    $isNewComment = classes\Comments::save($name, $message);
 }
 
 ?>
@@ -26,18 +27,6 @@ if ($name !== "" && $message !== "") {
 
     <!-- Styles -->
     <link href="css/app.css" rel="stylesheet">
-    <style>
-      @keyframes anim-alert {
-        0%      { opacity: 0; }
-        50%    { opacity: 1; }
-        100%    { opacity: 0; }
-      }
-      .animate-alert {
-        -moz-animation: anim-alert 3s;
-        animation: anim-alert 5s;
-        opacity: 0;
-      }
-    </style>
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
@@ -81,9 +70,57 @@ if ($name !== "" && $message !== "") {
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-                              <div class="alert alert-success animate-alert" role="alert">
-                                Комментарий успешно добавлен
-                              </div>
+                              <?php if ($isNewComment): ?>
+                                  <style>
+                                    @keyframes show-and-hide {
+                                      0%
+                                      {
+                                        opacity: 0;
+                                        padding: .75rem 1.25rem;
+                                        margin-bottom: 1rem;
+                                        border: inherit;
+                                        color: inherit;
+                                        height: inherit;
+                                        font-size: inherit;
+                                        visibility: inherit;
+                                      }
+                                      50% {
+                                        opacity: 1;
+                                        padding: .75rem 1.25rem;
+                                        margin-bottom: 1rem;
+                                        border: inherit;
+                                        color: inherit;
+                                        height: inherit;
+                                        font-size: inherit;
+                                        visibility: inherit;
+                                      }
+                                      100% {
+                                        opacity: 0.2;
+                                        padding: .75rem 1.25rem;
+                                        margin-bottom: 1rem;
+                                        border: inherit;
+                                        color: inherit;
+                                        height: inherit;
+                                        font-size: inherit;
+                                        visibility: inherit;
+                                      }
+                                    }
+                                    .animate-alert {
+                                      animation: show-and-hide 3s;
+                                      opacity: 1;
+                                      padding: 0 0;
+                                      margin-bottom: 0;
+                                      border: none;
+                                      color: transparent;
+                                      height: 1px;
+                                      font-size: 1px;
+                                      visibility: hidden;
+                                    }
+                                  </style>
+                                  <div class="alert alert-success animate-alert" role="alert">
+                                    Комментарий успешно добавлен
+                                  </div>
+                              <?php endif; ?>
 
                                 <?php $comments = classes\Comments::getAllComments(); if (isset($comments)): ?>
                                 <?php foreach ($comments as $data): ?>
