@@ -12,10 +12,9 @@ $message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : ""
 // Если имя и сообщение не пусты, то записываем комментарий в базу
 if ($name !== "" && $message !== "") {
     if(classes\Comments::save($name, $message) === true) {
-        header("Location: index.php?isNewCommentAdded");
+        echo ("success");
         exit;
     }
 }
 
-header("Location: index.php");
 exit;

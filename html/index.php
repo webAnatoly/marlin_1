@@ -1,9 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
-
-$isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,8 +58,8 @@ $isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
                         <div class="card">
                             <div class="card-header"><h3>Комментарии</h3></div>
 
-                            <div class="card-body">
-                              <?php if ($isNewComment): ?>
+                            <div class="card-body" id="allCommentsCard">
+                                <template id="alert-template">
                                   <style>
                                     @keyframes show-and-hide {
                                       0%
@@ -112,7 +109,7 @@ $isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
                                   <div class="alert alert-success animate-alert" role="alert">
                                     Комментарий успешно добавлен
                                   </div>
-                              <?php endif; ?>
+                                </template>
 
                                 <?php $comments = classes\Comments::getAllComments(); if (isset($comments)): ?>
                                 <?php foreach ($comments as $data): ?>
@@ -139,7 +136,7 @@ $isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
-                                <form action="post.php" method="post">
+                                <form action="" onsubmit="return false" name="addComment">
                                     <div class="form-group">
                                     <label for="exampleFormControlInput1">Имя</label>
                                     <input name="name" class="form-control" id="exampleFormControlInput1" />
@@ -148,7 +145,7 @@ $isNewComment = isset($_GET["isNewCommentAdded"]) ? true : false;
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
                                     <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                   </div>
-                                  <button type="submit" class="btn btn-success">Отправить</button>
+                                  <button type="button" class="btn btn-success" id="sendCommentBtn">Отправить</button>
                                 </form>
                             </div>
                         </div>
