@@ -23,6 +23,9 @@
             w.location.replace('index.php');
           }, 2000);
 
+          // Очистить поля формы
+          form.reset();
+
         }
       };
     }
