@@ -20,6 +20,8 @@
 
           // Ждем пока отработает анимация и перезагружаем страницу
           setTimeout(function () {
+            const alertBlock = d.querySelector('#alert-block');
+            if (alertBlock) { alertBlock.remove(); }
             w.location.replace('index.php');
           }, 2000);
 
