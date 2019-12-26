@@ -23,6 +23,11 @@ class Comments
 
         $sql = "SELECT * FROM Comments WHERE id < 1000";
 
+        // Если передан параметр $opt["sort"=>"reverse"]
+        if (isset($opt["sort"]) && $opt["sort"] === "reverse") {
+            $sql = "SELECT * FROM Comments WHERE id < 1000 ORDER BY id DESC"; // сортировка в обратном порядке
+        }
+
         $result = $mysql->query($sql);
 
         if ($result->num_rows > 0) {
