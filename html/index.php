@@ -112,7 +112,7 @@ spl_autoload_register("myAutoloader");
                                   </div>
                                 </template>
 
-                                <?php $comments = classes\Comments::getAllComments(); if (isset($comments)): ?>
+                                <?php $comments = classes\Comments::getAllComments(["sort"=>"last_to_first"]); if (isset($comments)): ?>
                                 <?php foreach ($comments as $data): ?>
 
                                 <div class="media">

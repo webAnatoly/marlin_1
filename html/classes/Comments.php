@@ -5,9 +5,10 @@ namespace classes;
 class Comments
 {
     /**
+     * @param $opt array массив опций
      * @return array возвращает массив с комментариями пользователе
      */
-    public static function getAllComments() {
+    public static function getAllComments($opt=[]) {
 
         $comments = array(
 //            array(
@@ -31,6 +32,17 @@ class Comments
         }
 
         $mysql->close();
+
+        // Если передан параметр $opt["sort"=>"last_to_first"], и кол-во комментов больше двух
+        // то последний комментарий из таблицы ставим в начало массива
+        if ( isset($opt["sort"])
+            && $opt["sort"] === "last_to_first"
+            && isset($comments[1]) ) {
+
+            $lastComment = array_pop($comments);
+            array_unshift($comments, $lastComment);
+
+        }
 
         return $comments;
     }
