@@ -2,7 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 /**
- * Обработчик пост запросов
+ * Обработчик POST запросов
  */
 
 // Обработка POST запроса
