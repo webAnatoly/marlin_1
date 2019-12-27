@@ -32,7 +32,7 @@ class Comments
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $comments[] = array('username'=>$row['name'], 'text'=>$row['message']);
+                $comments[] = array('username'=>$row['name'], 'text'=>$row['message'], 'ts'=>strtotime($row['ts']));
             }
         }
 

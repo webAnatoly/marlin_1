@@ -119,7 +119,7 @@ spl_autoload_register("myAutoloader");
                                   <img src="img/no-user-small.jpg" class="mr-3" alt="..." width="64" height="64">
                                   <div class="media-body">
                                     <h5 class="mt-0"><?=$data["username"]?></h5>
-                                    <span><small><?=$data["date"]?></small></span>
+                                    <span><small><?=date("d/m/Y", $data["ts"])?></small></span>
                                     <p>
                                         <?=$data["text"]?>
                                     </p>
