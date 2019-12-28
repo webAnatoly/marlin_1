@@ -9,6 +9,7 @@
     function submitCommentHandler() {
       const form = d.querySelector('form[name=addComment]');
       const data = new FormData(form);
+      data.append("add_new_comment", "");
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/post.php");
       xhr.send(data);
