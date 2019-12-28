@@ -28,6 +28,8 @@
           // Очистить поля формы
           form.reset();
 
+        } else if (xhr.response === "errorInput") {
+          w.location.href = "index.php";
         }
       };
     }

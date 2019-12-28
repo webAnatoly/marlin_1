@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 ?>
@@ -140,11 +141,18 @@ spl_autoload_register("myAutoloader");
                                 <form action="" onsubmit="return false" name="addComment">
                                     <div class="form-group">
                                     <label for="exampleFormControlInput1">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlInput1" />
+                                    <input name="name" class="form-control" id="exampleFormControlInput1"
+                                           value="<?=isset($_SESSION['tmp_fields']['name']) ? $_SESSION['tmp_fields']['name'] : ''?>"/>
+                                    <?php if(isset($_SESSION['isErrorForm']['name'])): ?>
+                                        <p style="color: red"><?=$_SESSION['isErrorForm']['name']?></p>
+                                    <?php endif; ?>
                                   </div>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
-                                    <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"><?=isset($_SESSION['tmp_fields']['message']) ? $_SESSION['tmp_fields']['message'] : ''?></textarea>
+                                    <?php if(isset($_SESSION['isErrorForm']['message'])): ?>
+                                        <p style="color: red"><?=$_SESSION['isErrorForm']['message']?></p>
+                                    <?php endif; ?>
                                   </div>
                                   <button type="button" class="btn btn-success" id="sendCommentBtn">Отправить</button>
                                 </form>
@@ -157,3 +165,4 @@ spl_autoload_register("myAutoloader");
     </div>
 </body>
 </html>
+<?php unset($_SESSION['isErrorForm'], $_SESSION['tmp_fields']); ?>
