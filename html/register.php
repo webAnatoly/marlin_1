@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,28 +59,55 @@
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                     <div class="col-md-6">
-                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="username" autofocus>
+                                        <?php if(isset($_SESSION['isErrorReg']['username'])): ?>
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="username">
 
                                         <span class="invalid-feedback" role="alert">
-                                                    <strong>Ошибка валидации</strong>
+                                                    <strong><?php echo $_SESSION['isErrorReg']['username'] ?></strong>
                                                 </span>
+                                        <?php else: ?>
+                                            <input id="name" type="text" class="form-control" name="username"
+                                                   value="<?php echo isset($_SESSION['tmp_reg_fields']['username']) ? $_SESSION['tmp_reg_fields']['username'] : ''; ?>">
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                    <?php if(isset($_SESSION['isErrorReg']['email'])): ?>
+                                        <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                        <div class="col-md-6">
+                                            <input id="email" type="email" class="form-control is-invalid" name="email" >
+                                            <span class="invalid-feedback" role="alert">
+                                                        <strong><?php echo $_SESSION['isErrorReg']['email'] ?></strong>
+                                                    </span>
+                                        </div>
+                                    <?php else: ?>
+                                        <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                        <div class="col-md-6">
+                                            <input id="email" type="email" class="form-control" name="email"
+                                                   value="<?php echo isset($_SESSION['tmp_reg_fields']['email']) ? $_SESSION['tmp_reg_fields']['email'] : ''; ?>">
+                                        </div>
+                                    <?php endif; ?>
 
-                                    <div class="col-md-6">
-                                        <input id="email" type="email" class="form-control" name="email" >
-                                    </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                    <?php if (isset($_SESSION['isErrorReg']['password'])): ?>
+                                        <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
-                                    <div class="col-md-6">
-                                        <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
-                                    </div>
+                                        <div class="col-md-6">
+                                            <input id="password" type="password" class="form-control is-invalid" name="password"  autocomplete="new-password">
+                                            <span class="invalid-feedback" role="alert">
+                                                        <strong><?php echo $_SESSION['isErrorReg']['password'] ?></strong>
+                                                    </span>
+                                        </div>
+                                    <?php else: ?>
+                                        <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+
+                                        <div class="col-md-6">
+                                            <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group row">
@@ -109,3 +137,4 @@
 </div>
 </body>
 </html>
+<?php unset($_SESSION['isErrorReg'], $_SESSION['tmp_reg_fields']); ?>

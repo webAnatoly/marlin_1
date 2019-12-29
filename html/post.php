@@ -7,6 +7,8 @@ spl_autoload_register("myAutoloader");
 
 // Обработка POST запроса регистрации нового пользователя
 if (isset($_POST['registration'])) {
+    session_start();
+    unset($_SESSION['isErrorReg']);
 
     $reg_data = array(
         'username' => isset($_POST['username']) ? htmlentities(trim($_POST['username'])) : "",
@@ -15,27 +17,38 @@ if (isset($_POST['registration'])) {
         'password_confirmation' => isset($_POST['password_confirmation']) ? htmlentities(trim($_POST['password_confirmation'])) : "",
     );
 
-    if ($reg_data['username'] === "" ) {
+    $_SESSION['tmp_reg_fields'] = $reg_data;
+
+    // валидация имени
+    if ($reg_data['username'] === '' ) {
         $_SESSION['isErrorReg']['username'] = "Ошибка валидации: пустое имя пользователя";
     } elseif (mb_strlen($reg_data['username']) > 100) {
         $_SESSION['isErrorReg']['username'] = "Ошибка валидации: превышена допустимая длина имени";
     }
 
-    if ( filter_var($reg_data['email'], FILTER_VALIDATE_EMAIL) ) {
+    // валидация емейла
+    if ( filter_var($reg_data['email'], FILTER_VALIDATE_EMAIL) === false ) {
         $_SESSION['isErrorReg']['email'] = "Ошибка валидации: невалидный емейл";
     }
 
-    if (mb_strlen($reg_data['password']) > 100) {
+    // валидация пароля
+    if($reg_data['password'] === '' || mb_strlen($reg_data['password']) < 4) {
+        $_SESSION['isErrorReg']['password'] = "Ошибка валидации: слишком короткий пароль";
+    } elseif (mb_strlen($reg_data['password']) > 255) {
         $_SESSION['isErrorReg']['password'] = "Ошибка валидации: превышена допустимая длина пароля";
     } elseif ($reg_data['password'] !== $reg_data['password_confirmation']) {
         $_SESSION['isErrorReg']['password'] = "Ошибка валидации: пароли не совпадают";
     }
 
+    // Если есть ошибки валидации, то перенаправляем и выходим
+    if (isset($_SESSION['isErrorReg'])) {
+        header("Location: register.php");
+        exit;
+    }
 
+    // Проверка не занят ли емейл
 
-
-    var_dump($reg_data);
-//    header("Location: register.php");
+    header("Location: register.php");
     exit;
 
 } elseif (isset($_POST['add_new_comment'])) { // Обработка POST запроса добавления нового комментария
