@@ -76,7 +76,9 @@
                                     <?php if(isset($_SESSION['isErrorReg']['email'])): ?>
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control is-invalid" name="email" >
+                                            <input id="email" type="email" class="form-control is-invalid" name="email"
+                                                   style="color: #e3342f;"
+                                                   value="<?php echo isset($_SESSION['tmp_reg_fields']['email']) ? $_SESSION['tmp_reg_fields']['email'] : ''; ?>">
                                             <span class="invalid-feedback" role="alert">
                                                         <strong><?php echo $_SESSION['isErrorReg']['email'] ?></strong>
                                                     </span>

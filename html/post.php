@@ -1,6 +1,10 @@
 <?php
+$config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
+
+$mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
 /**
  * Обработчик POST запросов
  */
@@ -47,6 +51,32 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка не занят ли емейл
+    $sql = "SELECT user_id FROM Users WHERE email='". $reg_data['email'] ."'";
+    $result = $mysql->query($sql);
+
+    if (isset($result->num_rows) && $result->num_rows > 0) {
+        $_SESSION['isErrorReg']['email'] = "Ошибка валидации: емейл занят";
+        header("Location: register.php");
+        exit;
+    }
+
+    // Создаем нового пользователя
+    $password_hash = password_hash($reg_data["password"], PASSWORD_DEFAULT);
+    if ($stmt = $mysql->prepare("INSERT INTO Users (name, email, pass_hash) VALUES (?, ?, ?)")) {
+        $stmt->bind_param("sss", $reg_data['username'], $reg_data['email'], $password_hash);
+        $stmt->execute();
+        $last_insert_id = $stmt->insert_id;
+        $stmt->close();
+    } else {
+        die ("database error connection");
+    }
+    $mysql->close();
+
+    // проверка успешно ли прошла запись в базу
+    if (is_int($last_insert_id) && $last_insert_id > 0) {
+        echo "Пользователь успешно зарегистрирован";
+        exit;
+    }
 
     header("Location: register.php");
     exit;
