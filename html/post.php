@@ -74,7 +74,8 @@ if (isset($_POST['registration'])) {
 
     // проверка успешно ли прошла запись в базу
     if (is_int($last_insert_id) && $last_insert_id > 0) {
-        echo "Пользователь успешно зарегистрирован";
+        $_SESSION["successReg"] = "Пользователь успешно зарегистрирован";
+        header("Location: register.php");
         exit;
     }
 

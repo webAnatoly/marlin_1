@@ -49,6 +49,16 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
+                    <?php if ($_SESSION["successReg"]): ?>
+                        <div class="alert alert-success animate-alert" role="alert" id="alert-block">
+                            <?php echo $_SESSION["successReg"]; ?>
+                        </div>
+                        <script>
+                            // Перезагрузка страницы через "Х" секунда после показа сообщения
+                            const countdown = 5;
+                            setTimeout(function(){window.location.reload();}, countdown);
+                        </script>
+                    <?php endif; ?>
                     <div class="card">
                         <div class="card-header">Register</div>
 
@@ -139,4 +149,4 @@
 </div>
 </body>
 </html>
-<?php unset($_SESSION['isErrorReg'], $_SESSION['tmp_reg_fields']); ?>
+<?php unset($_SESSION['isErrorReg'], $_SESSION['tmp_reg_fields'], $_SESSION["successReg"]); ?>
