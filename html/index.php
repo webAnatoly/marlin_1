@@ -89,7 +89,7 @@ spl_autoload_register("myAutoloader");
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="login.html">Login</a>
+                                <a class="nav-link" href="login.php">Login</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="register.php">Register</a>

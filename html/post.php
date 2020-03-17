@@ -9,7 +9,7 @@ $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["p
  * Обработчик POST запросов
  */
 
-// Обработка POST запроса регистрации нового пользователя
+/* Регистрация. Обработка POST запроса регистрации нового пользователя */
 if (isset($_POST['registration'])) {
     session_start();
     unset($_SESSION['isErrorReg']);
@@ -82,7 +82,13 @@ if (isset($_POST['registration'])) {
     header("Location: register.php");
     exit;
 
-} elseif (isset($_POST['add_new_comment'])) { // Обработка POST запроса добавления нового комментария
+/* Авторизация. Обработка POST запроса авторизации пользователя */
+} elseif (isset($_POST['user_autorisation'])) {
+
+    $a = 'test';
+
+/* Обработка POST запроса добавления нового комментария */
+} elseif (isset($_POST['add_new_comment'])) {
     session_start();
     // Обработка POST запроса добавления нового комментария
     $name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
