@@ -83,7 +83,7 @@ if (isset($_POST['registration'])) {
     exit;
 
 /* Авторизация. Обработка POST запроса авторизации пользователя */
-} elseif (isset($_POST['user_autorisation'])) {
+} elseif (isset($_POST['authorisation'])) {
 
     $a = 'test';
 

@@ -35,10 +35,10 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="login.html">Login</a>
+                                <a class="nav-link" href="login.php">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="register.html">Register</a>
+                                <a class="nav-link" href="register.php">Register</a>
                             </li>
                     </ul>
                 </div>
@@ -53,7 +53,7 @@
                             <div class="card-header">Login</div>
 
                             <div class="card-body">
-                                <form method="POST" action="">
+                                <form method="POST" action="post.php">
 
                                     <div class="form-group row">
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
