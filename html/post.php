@@ -83,9 +83,59 @@ if (isset($_POST['registration'])) {
     exit;
 
 /* Авторизация. Обработка POST запроса авторизации пользователя */
-} elseif (isset($_POST['authorisation'])) {
+} elseif (isset($_POST['authorisation']) && $_POST['authorisation'] === "") {
 
-    $a = 'test';
+    session_start();
+    unset($_SESSION['isErrorAuth']);
+
+    $auth_data = array(
+        'username' => isset($_POST['username']) ? htmlentities(trim($_POST['username'])) : "",
+        'email' => isset($_POST['email']) ? htmlentities(trim($_POST['email'])) : "",
+        'password' => isset($_POST['password']) ? htmlentities(trim($_POST['password'])) : "",
+    );
+
+    // валидация имени
+    if ($auth_data['username'] === '' ) {
+        $_SESSION['isErrorAuth']['username'] = "Ошибка валидации: пустое имя пользователя";
+    } elseif (mb_strlen($auth_data['username']) > 100) {
+        $_SESSION['isErrorAuth']['username'] = "Ошибка валидации: превышена допустимая длина имени";
+    }
+
+    // валидация емейла
+    if ( filter_var($auth_data['email'], FILTER_VALIDATE_EMAIL) === false ) {
+        $_SESSION['isErrorAuth']['email'] = "Ошибка валидации: невалидный емейл";
+    }
+
+    // валидация пароля
+    if($auth_data['password'] === '' || mb_strlen($auth_data['password']) < 4) {
+        $_SESSION['isErrorAuth']['password'] = "Ошибка валидации: слишком короткий пароль";
+    } elseif (mb_strlen($auth_data['password']) > 255) {
+        $_SESSION['isErrorAuth']['password'] = "Ошибка валидации: превышена допустимая длина пароля";
+    }
+
+    // Если есть ошибки валидации, то перенаправляем и выходим
+    if (isset($_SESSION['isErrorAuth'])) {
+        header("Location: login.php");
+        exit;
+    }
+
+    // Проверка существования пользователя
+    if(classes\User::isExists($auth_data["email"]) !== true) {
+        $_SESSION['isErrorAuth']['email'] = "Пользователя с таким емейлом не существует";
+        header("Location: login.php");
+        exit;
+    }
+
+    // Проверка пароля
+    if(classes\User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
+        $_SESSION['isErrorAuth']['password'] = "неверный пароль";
+        header("Location: login.php");
+        exit;
+    } else {
+        $_SESSION['success_authorisation'] = $auth_data;
+        header( "Location: index.php" );
+        exit;
+    }
 
 /* Обработка POST запроса добавления нового комментария */
 } elseif (isset($_POST['add_new_comment'])) {
