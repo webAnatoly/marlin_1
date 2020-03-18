@@ -56,7 +56,36 @@ class User
         }
         $mysql->close();
 
-        return $fetched_pass_hash === $pass;
+        return password_verify($pass, $fetched_pass_hash);
 
+    }
+
+    public static function getData($pass = "", $email = "")
+    {
+        // Подключение к базе
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        if ( !self::isCorrectPassword($pass, $email) ) {
+            return array();
+        }
+
+        // Достаем из базы данные пользователя по указанному паролю
+        if ($stmt = $mysql->prepare("SELECT user_id, name, reg_date FROM Users WHERE email=?")) {
+            $stmt->bind_param("s", $email );
+            $stmt->execute();
+            $stmt->bind_result($user_id,$name, $reg_date);
+            $stmt->fetch();
+            $stmt->close();
+        } else {
+            die("Database access error");
+        }
+        $mysql->close();
+        return array(
+            "user_id" => isset($user_id) ? $user_id : 0,
+            "name" => isset($name) ? $name : "",
+            "email" => isset($email) ? $email : "",
+            "reg_date" => isset($reg_date) ? $reg_date : "",
+        );
     }
 }

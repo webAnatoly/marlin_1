@@ -32,10 +32,16 @@
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control is-invalid " name="email"  autocomplete="email" autofocus >
+                                            <?php if (isset($_SESSION['isErrorAuth']['email'])): ?>
+                                                <input id="email" type="email" class="form-control is-invalid " name="email"  autocomplete="email" autofocus
+                                                       value="<?php echo isset($_SESSION["tmp_auth_fields"]["email"]) ? $_SESSION["tmp_auth_fields"]["email"] : ''; ?>">
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>Ошибка валидации</strong>
+                                                    <strong><?php echo $_SESSION['isErrorAuth']['email'] ?></strong>
                                                 </span>
+                                            <?php else: ?>
+                                                <input id="email" type="email" class="form-control" name="email"  autocomplete="email" autofocus
+                                                       value="<?php echo isset($_SESSION["tmp_auth_fields"]["email"]) ? $_SESSION["tmp_auth_fields"]["email"] : ''; ?>">
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 
@@ -43,7 +49,14 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control" name="password"  autocomplete="current-password">
+                                            <?php if (isset($_SESSION['isErrorAuth']['password'])): ?>
+                                                <input id="password" type="password" class="form-control is-invalid " name="password"  autocomplete="current-password">
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong><?php echo $_SESSION['isErrorAuth']['password'] ?></strong>
+                                                </span>
+                                            <?php else: ?>
+                                                <input id="password" type="password" class="form-control " name="password"  autocomplete="current-password">
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 
@@ -78,3 +91,4 @@
     </div>
 </body>
 </html>
+<?php unset($_SESSION['isErrorAuth'], $_SESSION["tmp_auth_fields"]); ?>

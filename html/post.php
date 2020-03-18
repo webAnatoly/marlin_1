@@ -89,17 +89,9 @@ if (isset($_POST['registration'])) {
     unset($_SESSION['isErrorAuth']);
 
     $auth_data = array(
-        'username' => isset($_POST['username']) ? htmlentities(trim($_POST['username'])) : "",
         'email' => isset($_POST['email']) ? htmlentities(trim($_POST['email'])) : "",
         'password' => isset($_POST['password']) ? htmlentities(trim($_POST['password'])) : "",
     );
-
-    // валидация имени
-    if ($auth_data['username'] === '' ) {
-        $_SESSION['isErrorAuth']['username'] = "Ошибка валидации: пустое имя пользователя";
-    } elseif (mb_strlen($auth_data['username']) > 100) {
-        $_SESSION['isErrorAuth']['username'] = "Ошибка валидации: превышена допустимая длина имени";
-    }
 
     // валидация емейла
     if ( filter_var($auth_data['email'], FILTER_VALIDATE_EMAIL) === false ) {
@@ -112,6 +104,8 @@ if (isset($_POST['registration'])) {
     } elseif (mb_strlen($auth_data['password']) > 255) {
         $_SESSION['isErrorAuth']['password'] = "Ошибка валидации: превышена допустимая длина пароля";
     }
+
+    $_SESSION["tmp_auth_fields"] = $auth_data;
 
     // Если есть ошибки валидации, то перенаправляем и выходим
     if (isset($_SESSION['isErrorAuth'])) {
@@ -132,7 +126,7 @@ if (isset($_POST['registration'])) {
         header("Location: login.php");
         exit;
     } else {
-        $_SESSION['success_authorisation'] = $auth_data;
+        $_SESSION['success_authorisation'] = classes\User::getData($auth_data["password"], $auth_data["email"]);
         header( "Location: index.php" );
         exit;
     }
