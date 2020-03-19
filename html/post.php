@@ -131,6 +131,12 @@ if (isset($_POST['registration'])) {
         exit;
     }
 
+/* Логаут */
+} elseif (isset($_GET['logout'])) {
+    session_start();
+    unset($_SESSION['success_authorisation']);
+    header( "Location: login.php" );
+    exit;
 /* Обработка POST запроса добавления нового комментария */
 } elseif (isset($_POST['add_new_comment'])) {
     session_start();
