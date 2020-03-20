@@ -125,11 +125,18 @@ if (isset($_POST['registration'])) {
         $_SESSION['isErrorAuth']['password'] = "неверный пароль";
         header("Location: login.php");
         exit;
-    } else {
+    }
+
+    // Если всё ОК, то создаем токен, ставим куки.
+
+    if ( classes\User::authorisation($auth_data["email"]) === true ) {
         $_SESSION['success_authorisation'] = classes\User::getData($auth_data["password"], $auth_data["email"]);
         header( "Location: index.php" );
         exit;
+    } else {
+        die("unexpected error occurred <a href='index.php'>На главную</a>");
     }
+
 
 /* Обработка POST запроса добавления нового комментария */
 } elseif (isset($_POST['add_new_comment'])) {
