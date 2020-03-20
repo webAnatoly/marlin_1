@@ -18,7 +18,7 @@
                 <!-- Authentication Links -->
                 <?php if (isset($_SESSION['success_authorisation'])): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="post.php?logout">Logout</a>
+                        <a class="nav-link" href="logout_model.php?logout">Logout</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="profile.php"><?php echo $_SESSION['success_authorisation']['name']; ?></a>
