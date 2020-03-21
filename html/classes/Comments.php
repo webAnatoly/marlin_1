@@ -54,11 +54,12 @@ class Comments
 
     /**
      * Записывает комментарий в базу. Если таблицы с комментариями нет то создает её.
+     * @param   $user_id string
      * @param   $username string
      * @param   $message string
      * @return  true в случае успеха вернет true
      */
-    public static function save($username, $message)
+    public static function save($user_id, $username, $message)
     {
         $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
@@ -75,8 +76,8 @@ class Comments
         }
 
         // Подгатавливаем SQL запрос на сохранение комментария
-        if ($stmt = $mysql->prepare("INSERT INTO Comments (name, message) VALUES (?, ?)")) {
-            $stmt->bind_param("ss", $username, $message);
+        if ($stmt = $mysql->prepare("INSERT INTO Comments (name, message, user_id) VALUES (?, ?, ?)")) {
+            $stmt->bind_param("ssd", $username, $message, $user_id);
             $stmt->execute();
             $stmt->close();
         } else {

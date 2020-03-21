@@ -31,6 +31,10 @@
 
         } else if (xhr.response === "errorInput") {
           w.location.href = "index.php";
+        } else {
+          const div = document.createElement('DIV');
+          div.innerHTML = "<p style='color: red;'>Непредвиденная ошибка добавления комментария</p>";
+          document.querySelector('form textarea').parentElement.appendChild(div);
         }
       };
     }

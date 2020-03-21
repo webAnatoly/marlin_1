@@ -5,6 +5,11 @@ spl_autoload_register("myAutoloader");
 
 $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
+// Определяем залогинен ли пользователь, если да, то сохраняем его данные в массив
+$user = array();
+$user = classes\User::getData($_COOKIE["_auth_key"]);
+$isUser = (isset($user["user_id"]) && $user["user_id"] > 0);
+
 /**
  * Обработчик POST запросов
  */
@@ -140,23 +145,24 @@ if (isset($_POST['registration'])) {
 } elseif (isset($_POST['add_new_comment'])) {
     session_start();
     // Обработка POST запроса добавления нового комментария
-    $name = isset($_POST['name']) ? htmlentities(trim($_POST['name'])) : "";
-    $message = isset($_POST['message']) ? htmlentities(trim($_POST['message'])) : "";
+    $name = isset($user["name"]) ? htmlentities(trim($user["name"])) : "---";
+    $message = isset($_POST['message']) ? htmlentities(trim($_POST["message"])) : "";
 
     // Временно сохраняем в сессию
-    $_SESSION['tmp_fields']['name'] = $name;
     $_SESSION['tmp_fields']['message'] = $message;
 
     // Если имя и сообщение не пусты, то записываем комментарий в базу
-    if ($name !== "" && $message !== "") {
-        if(classes\Comments::save($name, $message) === true) {
+    if ($message !== "" && isset($user["user_id"])) {
+        if(classes\Comments::save($user["user_id"], $name, $message) === true) {
             unset($_SESSION['isErrorForm'], $_SESSION['tmp_fields']);
             echo ("success");
+            exit;
+        } else {
+            echo ("error");
             exit;
         }
     }
 
-    if ($name === "") { $_SESSION['isErrorForm']['name'] = "Пустое имя"; }
     if ($message === "") { $_SESSION['isErrorForm']['message'] = "Пустое сообщение"; }
 
     if ($name === "" ||  $message === "") {
