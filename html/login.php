@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
+spl_autoload_register("myAutoloader");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

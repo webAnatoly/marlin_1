@@ -1,8 +1,7 @@
 <?php
 /* Логаут */
 if (isset($_GET['logout'])) {
-    session_start();
-    unset($_SESSION['success_authorisation']);
+    setcookie("_auth_key", "", 1);
     header( "Location: login.php" );
     exit;
 }
