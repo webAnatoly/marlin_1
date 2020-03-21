@@ -2,6 +2,10 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
+
+$user = array();
+$user = classes\User::getData($_COOKIE["_auth_key"]);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

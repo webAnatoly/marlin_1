@@ -1,7 +1,3 @@
-<?php session_start();
-    $user = array();
-    $user = classes\User::getData($_COOKIE["_auth_key"]);
-?>
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="index.php">
