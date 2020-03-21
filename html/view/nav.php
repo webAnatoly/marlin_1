@@ -1,3 +1,7 @@
+<?php session_start();
+    $user = array();
+    $user = classes\User::getData($_COOKIE["_auth_key"]);
+?>
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="index.php">
@@ -16,12 +20,12 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
-                <?php if (isset($_SESSION['success_authorisation'])): ?>
+                <?php if (isset($user["user_id"]) && $user["user_id"] > 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="logout_model.php?logout">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.php"><?php echo $_SESSION['success_authorisation']['name']; ?></a>
+                        <a class="nav-link" href="profile.php"><?php echo $user["name"]; ?></a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">

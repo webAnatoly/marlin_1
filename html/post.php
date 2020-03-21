@@ -127,14 +127,12 @@ if (isset($_POST['registration'])) {
         exit;
     }
 
-    // Если всё ОК, то создаем токен, ставим куки.
-
+    // Если всё ОК, то вызываем метод authorisation(), который генерит токен и ставит его в куку браузеру.
     if ( classes\User::authorisation($auth_data["email"]) === true ) {
-        $_SESSION['success_authorisation'] = classes\User::getData($auth_data["password"], $auth_data["email"]);
         header( "Location: index.php" );
         exit;
     } else {
-        die("unexpected error occurred <a href='index.php'>На главную</a>");
+        die("Unexpected error while authorisation <a href='index.php'>На главную</a>");
     }
 
 

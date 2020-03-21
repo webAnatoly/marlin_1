@@ -60,19 +60,20 @@ class User
 
     }
 
-    public static function getData($pass = "", $email = "")
+    /**
+     * Получает данные о пользователе по токену и возвращает их в массиве.
+     * @param string $token
+     * @return array
+     */
+    public static function getData($token)
     {
         // Подключение к базе
         $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
-        if ( !self::isCorrectPassword($pass, $email) ) {
-            return array();
-        }
-
         // Достаем из базы данные пользователя по указанному паролю
-        if ($stmt = $mysql->prepare("SELECT user_id, name, reg_date FROM Users WHERE email=?")) {
-            $stmt->bind_param("s", $email );
+        if ($stmt = $mysql->prepare("SELECT user_id, name, reg_date FROM Users WHERE token=?")) {
+            $stmt->bind_param("s", $token );
             $stmt->execute();
             $stmt->bind_result($user_id,$name, $reg_date);
             $stmt->fetch();
