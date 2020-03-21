@@ -112,14 +112,6 @@ spl_autoload_register("myAutoloader");
 
                             <div class="card-body">
                                 <form action="" onsubmit="return false" name="addComment">
-                                    <div class="form-group">
-                                    <label for="exampleFormControlInput1">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlInput1"
-                                           value="<?=isset($_SESSION['tmp_fields']['name']) ? $_SESSION['tmp_fields']['name'] : ''?>"/>
-                                    <?php if(isset($_SESSION['isErrorForm']['name'])): ?>
-                                        <p style="color: red"><?=$_SESSION['isErrorForm']['name']?></p>
-                                    <?php endif; ?>
-                                  </div>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1">Сообщение</label>
                                     <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"><?=isset($_SESSION['tmp_fields']['message']) ? $_SESSION['tmp_fields']['message'] : ''?></textarea>
