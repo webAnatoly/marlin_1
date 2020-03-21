@@ -16,7 +16,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
-                <?php if (isset($user["user_id"]) && $user["user_id"] > 0): ?>
+                <?php if ($isUser): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="logout_model.php?logout">Logout</a>
                     </li>

@@ -5,6 +5,7 @@ spl_autoload_register("myAutoloader");
 
 $user = array();
 $user = classes\User::getData($_COOKIE["_auth_key"]);
+$isUser = (isset($user["user_id"]) && $user["user_id"] > 0);
 
 ?>
 <!DOCTYPE html>
@@ -112,20 +113,25 @@ $user = classes\User::getData($_COOKIE["_auth_key"]);
 
                     <div class="col-md-12" style="margin-top: 20px;">
                         <div class="card">
-                            <div class="card-header"><h3>Оставить комментарий</h3></div>
+                            <?php if ($isUser): ?>
+                                <div class="card-header"><h3>Оставить комментарий</h3></div>
 
-                            <div class="card-body">
-                                <form action="" onsubmit="return false" name="addComment">
-                                  <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Сообщение</label>
-                                    <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"><?=isset($_SESSION['tmp_fields']['message']) ? $_SESSION['tmp_fields']['message'] : ''?></textarea>
-                                    <?php if(isset($_SESSION['isErrorForm']['message'])): ?>
-                                        <p style="color: red"><?=$_SESSION['isErrorForm']['message']?></p>
-                                    <?php endif; ?>
-                                  </div>
-                                  <button type="button" class="btn btn-success" id="sendCommentBtn">Отправить</button>
-                                </form>
-                            </div>
+                                <div class="card-body">
+                                    <form action="" onsubmit="return false" name="addComment">
+                                      <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Сообщение</label>
+                                        <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"><?=isset($_SESSION['tmp_fields']['message']) ? $_SESSION['tmp_fields']['message'] : ''?></textarea>
+                                        <?php if(isset($_SESSION['isErrorForm']['message'])): ?>
+                                            <p style="color: red"><?=$_SESSION['isErrorForm']['message']?></p>
+                                        <?php endif; ?>
+                                      </div>
+                                      <button type="button" class="btn btn-success" id="sendCommentBtn">Отправить</button>
+                                    </form>
+                                </div>
+                            <?php else: ?>
+                                <div class="card-header"><p>Чтобы оставить комментарий
+                                        <a href="login.php">войдите</a> или <a href="register.php">зарегистрируйтесь</a>.</p></div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
