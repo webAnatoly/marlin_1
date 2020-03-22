@@ -21,11 +21,15 @@ class Comments
         $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
-        $sql = "SELECT * FROM Comments WHERE id < 1000";
+//      $sql = "SELECT * FROM Comments WHERE id < 1000";
+        $sql = "SELECT Comments.message, Comments.ts, Users.name
+                FROM Comments INNER JOIN Users ON Comments.user_id=Users.user_id";
 
         // Если передан параметр $opt["sort"=>"reverse"]
         if (isset($opt["sort"]) && $opt["sort"] === "reverse") {
-            $sql = "SELECT * FROM Comments WHERE id < 1000 ORDER BY id DESC"; // сортировка в обратном порядке
+            $sql = "SELECT Comments.message, Comments.ts, Users.name
+                    From Comments INNER JOIN Users ON Comments.user_id=Users.user_id
+                    ORDER BY Comments.id DESC"; // сортировка в обратном порядке
         }
 
         $result = $mysql->query($sql);
