@@ -80,8 +80,8 @@ class Comments
         }
 
         // Подгатавливаем SQL запрос на сохранение комментария
-        if ($stmt = $mysql->prepare("INSERT INTO Comments (name, message, user_id) VALUES (?, ?, ?)")) {
-            $stmt->bind_param("ssd", $username, $message, $user_id);
+        if ($stmt = $mysql->prepare("INSERT INTO Comments (message, user_id) VALUES (?, ?)")) {
+            $stmt->bind_param("sd", $message, $user_id);
             $stmt->execute();
             $stmt->close();
         } else {
