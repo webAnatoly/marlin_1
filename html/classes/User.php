@@ -72,10 +72,10 @@ class User
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
         // Достаем из базы данные пользователя по указанному паролю
-        if ($stmt = $mysql->prepare("SELECT user_id, name, reg_date FROM Users WHERE token=?")) {
+        if ($stmt = $mysql->prepare("SELECT user_id, name, email, reg_date FROM Users WHERE token=?")) {
             $stmt->bind_param("s", $token );
             $stmt->execute();
-            $stmt->bind_result($user_id,$name, $reg_date);
+            $stmt->bind_result($user_id,$name, $email, $reg_date);
             $stmt->fetch();
             $stmt->close();
         } else {

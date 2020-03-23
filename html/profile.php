@@ -42,13 +42,13 @@
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Name</label>
-                                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="John">
+                                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['name'])?>">
 
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Email</label>
-                                            <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="john@example.com">
+                                            <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['email'])?>">
                                             <span class="text text-danger">
                                                 Ошибка валидации
                                             </span>
