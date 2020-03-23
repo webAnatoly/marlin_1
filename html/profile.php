@@ -15,7 +15,15 @@
 </head>
 <body>
 <div id="app">
-    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/view/nav.php"?>
+    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/view/nav.php";
+
+        // Для гостей показываем сообщение о неоходимости авторизироваться и выходим
+        if ($isUser !== true) {
+                die ("<div style='width:90%; margin: 20px auto; text-align: center;'><div class=\"alert alert-success\" role=\"alert\">
+                Для продолжения необходимо <a href='login.php'>авторизироваться</a>
+                    </div></div></div></body></html>");
+        }
+    ?>
 
     <main class="py-4">
         <div class="container">
