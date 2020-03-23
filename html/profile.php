@@ -37,7 +37,7 @@
                                 Профиль успешно обновлен
                             </div>
 
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="post.php" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
@@ -62,6 +62,8 @@
                                     <div class="col-md-4">
                                         <img src="img/no-user.jpg" alt="" class="img-fluid">
                                     </div>
+
+                                    <input type="hidden" name="edit_profile">
 
                                     <div class="col-md-12">
                                         <button class="btn btn-warning">Edit profile</button>

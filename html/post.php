@@ -99,12 +99,12 @@ if (isset($_POST['registration'])) {
     );
 
     // валидация емейла
-    if ( filter_var($auth_data['email'], FILTER_VALIDATE_EMAIL) === false ) {
+    if (filter_var($auth_data['email'], FILTER_VALIDATE_EMAIL) === false) {
         $_SESSION['isErrorAuth']['email'] = "Ошибка валидации: невалидный емейл";
     }
 
     // валидация пароля
-    if($auth_data['password'] === '' || mb_strlen($auth_data['password']) < 4) {
+    if ($auth_data['password'] === '' || mb_strlen($auth_data['password']) < 4) {
         $_SESSION['isErrorAuth']['password'] = "Ошибка валидации: слишком короткий пароль";
     } elseif (mb_strlen($auth_data['password']) > 255) {
         $_SESSION['isErrorAuth']['password'] = "Ошибка валидации: превышена допустимая длина пароля";
@@ -119,27 +119,36 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка существования пользователя
-    if(classes\User::isExists($auth_data["email"]) !== true) {
+    if (classes\User::isExists($auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['email'] = "Пользователя с таким емейлом не существует";
         header("Location: login.php");
         exit;
     }
 
     // Проверка пароля
-    if(classes\User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
+    if (classes\User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['password'] = "неверный пароль";
         header("Location: login.php");
         exit;
     }
 
     // Если всё ОК, то вызываем метод authorisation(), который генерит токен и ставит его в куку браузеру.
-    if ( classes\User::authorisation($auth_data["email"]) === true ) {
-        header( "Location: index.php" );
+    if (classes\User::authorisation($auth_data["email"]) === true) {
+        header("Location: index.php");
         exit;
     } else {
         die("Unexpected error while authorisation <a href='index.php'>На главную</a>");
     }
 
+/* Обработка POST запроса редактирования профила */
+} elseif(isset($_POST["edit_profile"])) {
+
+    $update_profile_data = array(
+        "name" => isset($_POST["name"]) ? htmlentities(trim($_POST["name"])) : "",
+        "email" => isset($_POST["email"]) ? htmlentities(trim($_POST["email"])) : "",
+    );
+    header("Location: profile.php");
+    die;
 
 /* Обработка POST запроса добавления нового комментария */
 } elseif (isset($_POST['add_new_comment'])) {
