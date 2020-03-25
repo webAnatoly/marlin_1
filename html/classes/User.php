@@ -6,6 +6,12 @@ namespace classes;
 
 class User
 {
+    private static $data = array("test"=>1234);
+    public static function get()
+    {
+        return self::$data;
+    }
+
     /**
      * Проверяет существует ли в базе пользователь с указанным емейлом
      * @param string $email
@@ -88,6 +94,59 @@ class User
             "email" => isset($email) ? $email : "",
             "reg_date" => isset($reg_date) ? $reg_date : "",
         );
+    }
+
+    /**
+     * Обновляет данные пользователя (имя, емейл и т.д.) в соответствии с переданными параметрами.
+     * Например, если передано только имя, то обновит только имя и т.д.
+     * @param $token
+     * @param string $name
+     * @param string $email
+     * @param array $files
+     * @return bool
+     */
+    public static function updateData($token, $name="", $email="", $files=array())
+    {
+        // Подключение к базе
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        if ($name !== "" && $email === "") { // обновить только имя
+
+            if ($stmt = $mysql->prepare("UPDATE Users SET name=? WHERE token=?")) {
+                $stmt->bind_param("ss", $name, $token);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                die ("database error connection");
+            }
+            return true;
+
+        } elseif ($name === "" && $email !== "") { // обновить только емейл
+
+            if ($stmt = $mysql->prepare("UPDATE Users SET email=? WHERE token=?")) {
+                $stmt->bind_param("ss", $email, $token);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                die ("database error connection");
+            }
+            return true;
+
+        } elseif ($name !== "" && $email !== "") { // обновить имя и емейл
+
+            if ($stmt = $mysql->prepare("UPDATE Users SET name=?, email=? WHERE token=?")) {
+                $stmt->bind_param("sss", $name, $email, $token);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                die ("database error connection");
+            }
+            return true;
+
+        }
+        return false;
+
     }
 
     /**

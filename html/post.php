@@ -143,12 +143,39 @@ if (isset($_POST['registration'])) {
 /* Обработка POST запроса редактирования профила */
 } elseif(isset($_POST["edit_profile"])) {
 
-    $update_profile_data = array(
+    $new_data = array(
         "name" => isset($_POST["name"]) ? htmlentities(trim($_POST["name"])) : "",
         "email" => isset($_POST["email"]) ? htmlentities(trim($_POST["email"])) : "",
     );
-    header("Location: profile.php");
-    die;
+
+    // Проверка обязательных полей на пустоту
+    if (mb_strlen($new_data["name"]) < 1) { $_SESSION['isErrorProfile']['name'] = "Поле не должно быть пустым"; }
+    if (mb_strlen($new_data["name"]) > 255) { $_SESSION['isErrorProfile']['name'] = "Превышена допустимая длина"; }
+
+    // Валидация емейла
+    if (    filter_var($new_data['email'], FILTER_VALIDATE_EMAIL) === false
+            || mb_strlen($new_data['email']) > 255  ) {
+
+        $_SESSION['isErrorProfile']['email'] = "Пустой или некорректный емейл";
+
+    }
+
+    // Проверка емейла на дублирование.
+    if (classes\User::isExists($new_data["email"]) === true &&
+        classes\User::getData($_COOKIE["_auth_key"])["email"] !== $new_data["email"] // Если старый емейл совпадает с новым, то всё ОК.
+    ) {
+        $_SESSION['isErrorProfile']['email'] = "Емейл уже используется";
+    }
+
+    // Если были ошибки, то выходим
+    if (isset($_SESSION['isErrorProfile'])) {
+        header("Location: profile.php");
+        exit;
+    } else { // Если ошибок не было, то обновляем данные
+        classes\User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
+        header("Location: profile.php");
+        exit;
+    }
 
 /* Обработка POST запроса добавления нового комментария */
 } elseif (isset($_POST['add_new_comment'])) {
