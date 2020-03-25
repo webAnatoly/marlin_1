@@ -44,33 +44,33 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Name</label>
+                                            <label for="formControlInputProfileName1">Name</label>
                                             <?php if ( isset($_SESSION['isErrorProfile']['name']) ): ?>
-                                                <input type="text" class="form-control is-invalid" name="name" id="exampleFormControlInput1" value="">
+                                                <input type="text" class="form-control is-invalid" name="name" id="formControlInputProfileName1" value="">
                                                 <span class="text text-danger">
                                                     <? echo $_SESSION['isErrorProfile']['name'] ?>
                                                 </span>
                                             <? else: ?>
-                                                <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['name'])?>">
+                                                <input type="text" class="form-control" name="name" id="formControlInputProfileName1" value="<?php echo htmlspecialchars($user['name'])?>">
                                             <? endif; ?>
 
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Email</label>
+                                            <label for="formControlInputProfileEmail1">Email</label>
                                             <?php if ( isset($_SESSION['isErrorProfile']['email']) ): ?>
-                                                <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="">
+                                                <input type="email" class="form-control is-invalid" name="email" id="formControlInputProfileEmail1" value="">
                                                 <span class="text text-danger">
                                                     <? echo $_SESSION['isErrorProfile']['email'] ?>
                                                 </span>
                                             <? else: ?>
-                                                <input type="email" class="form-control" name="email" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['email'])?>">
+                                                <input type="email" class="form-control" name="email" id="formControlInputProfileEmail1" value="<?php echo htmlspecialchars($user['email'])?>">
                                             <? endif; ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Аватар</label>
-                                            <input type="file" class="form-control" name="image" id="exampleFormControlInput1">
+                                            <label for="formControlInputProfileImage1">Аватар</label>
+                                            <input type="file" class="form-control" name="image" id="formControlInputProfileImage1">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -101,18 +101,18 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Current password</label>
-                                            <input type="password" name="current" class="form-control" id="exampleFormControlInput1">
+                                            <label for="formControlInputProfilePasswordCurrent">Current password</label>
+                                            <input type="password" name="current" class="form-control" id="formControlInputProfilePasswordCurrent">
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">New password</label>
-                                            <input type="password" name="password" class="form-control" id="exampleFormControlInput1">
+                                            <label for="formControlInputProfilePasswordNew">New password</label>
+                                            <input type="password" name="password" class="form-control" id="formControlInputProfilePasswordNew">
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Password confirmation</label>
-                                            <input type="password" name="password_confirmation" class="form-control" id="exampleFormControlInput1">
+                                            <label for="formControlInputProfilePasswordConfirm">Password confirmation</label>
+                                            <input type="password" name="password_confirmation" class="form-control" id="formControlInputProfilePasswordConfirm">
                                         </div>
 
                                         <button class="btn btn-success">Submit</button>
