@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,25 +34,38 @@
                         <div class="card-header"><h3>Профиль пользователя</h3></div>
 
                         <div class="card-body">
-                            <div class="alert alert-success" role="alert">
-                                Профиль успешно обновлен
-                            </div>
+                            <?php if (isset($_SESSION["isProfileUpdated"])): ?>
+                                <div class="alert alert-success" role="alert">
+                                    Профиль успешно обновлен
+                                </div>
+                            <?php endif; ?>
 
                             <form action="post.php" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Name</label>
-                                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['name'])?>">
+                                            <?php if ( isset($_SESSION['isErrorProfile']['name']) ): ?>
+                                                <input type="text" class="form-control is-invalid" name="name" id="exampleFormControlInput1" value="">
+                                                <span class="text text-danger">
+                                                    <? echo $_SESSION['isErrorProfile']['name'] ?>
+                                                </span>
+                                            <? else: ?>
+                                                <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['name'])?>">
+                                            <? endif; ?>
 
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Email</label>
-                                            <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['email'])?>">
-                                            <span class="text text-danger">
-                                                Ошибка валидации
-                                            </span>
+                                            <?php if ( isset($_SESSION['isErrorProfile']['email']) ): ?>
+                                                <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="">
+                                                <span class="text text-danger">
+                                                    <? echo $_SESSION['isErrorProfile']['email'] ?>
+                                                </span>
+                                            <? else: ?>
+                                                <input type="email" class="form-control" name="email" id="exampleFormControlInput1" value="<?php echo htmlspecialchars($user['email'])?>">
+                                            <? endif; ?>
                                         </div>
 
                                         <div class="form-group">
@@ -114,3 +128,4 @@
 </div>
 </body>
 </html>
+<?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"]); ?>

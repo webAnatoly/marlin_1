@@ -142,6 +142,7 @@ if (isset($_POST['registration'])) {
 
 /* Обработка POST запроса редактирования профила */
 } elseif(isset($_POST["edit_profile"])) {
+    session_start();
 
     $new_data = array(
         "name" => isset($_POST["name"]) ? htmlentities(trim($_POST["name"])) : "",
@@ -173,6 +174,7 @@ if (isset($_POST['registration'])) {
         exit;
     } else { // Если ошибок не было, то обновляем данные
         classes\User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
+        $_SESSION["isProfileUpdated"] = true;
         header("Location: profile.php");
         exit;
     }
