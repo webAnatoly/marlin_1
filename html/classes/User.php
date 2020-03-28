@@ -78,10 +78,10 @@ class User
         $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
 
         // Достаем из базы данные пользователя по указанному паролю
-        if ($stmt = $mysql->prepare("SELECT user_id, name, email, reg_date FROM Users WHERE token=?")) {
+        if ($stmt = $mysql->prepare("SELECT user_id, name, email, reg_date, avatar FROM Users WHERE token=?")) {
             $stmt->bind_param("s", $token );
             $stmt->execute();
-            $stmt->bind_result($user_id,$name, $email, $reg_date);
+            $stmt->bind_result($user_id,$name, $email, $reg_date, $avatar);
             $stmt->fetch();
             $stmt->close();
         } else {
@@ -93,6 +93,7 @@ class User
             "name" => isset($name) ? $name : "",
             "email" => isset($email) ? $email : "",
             "reg_date" => isset($reg_date) ? $reg_date : "",
+            "avatar" => isset($avatar) ? $avatar : "img/no-user.jpg",
         );
     }
 
@@ -162,6 +163,30 @@ class User
             return setcookie("_auth_key", $token, time() + (86400 * 30), "/"); // 86400 = 1 day
         }
         return false;
+    }
+
+    /**
+     * Сохраняет путь к картинке пользователя в базу
+     * @param string $token токен пользователя, который приходит в куках браузера
+     * @param string $path путь к файлу
+     */
+    public static function insertFile($token, $path)
+    {
+        // Подключение к базе
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        $user_id = self::getData($token)["user_id"];
+
+        // Запись пути к файлу в базу
+        if ($stmt = $mysql->prepare("UPDATE Users SET avatar=? WHERE user_id=?")) {
+            $stmt->bind_param("sd", $path, $user_id);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            die ("database error connection");
+        }
+
     }
 
     /**

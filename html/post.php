@@ -144,6 +144,49 @@ if (isset($_POST['registration'])) {
 } elseif(isset($_POST["edit_profile"])) {
     session_start();
 
+    var_dump($_POST);
+
+    if ($_FILES["image"]["error"] === 2) { // быстрая проверка на превышение размера файла для удобства пользователей на основе скрытого инпута <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+
+        $_SESSION["isErrorFileUpload"]["message"] = "Превышен допустимый размер файла";
+        die("exceed max file size");
+
+    } elseif ($_FILES["image"]["error"] === 0) {
+
+        // основная проверка на превышение размера файла
+        $max_file_size = 30000;
+        if ($_FILES["image"]["size"] > $max_file_size) {
+            die("exceeded max file size");
+        };
+
+        // определение mime типа файла
+        $mime_type = mime_content_type($_FILES["image"]["tmp_name"]);
+        $mime_type = array_pop(explode("/", $mime_type));;
+
+        $allowed_types = array("png", "jpg", "jpeg", "bmp");
+        if(!in_array($mime_type, $allowed_types)) {
+            die("not allowed picture type");
+        }
+
+        // генерация имени и сохранение файла
+        $tmp_name = $_FILES["image"]["tmp_name"];
+        $name = uniqid('avatar_', true) . "." . $mime_type;
+
+        if (move_uploaded_file($tmp_name, "uploads/$name")) {
+
+            // запись пути к файлу в базу
+            $url_img = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $name;
+            \classes\User::insertFile($_COOKIE["_auth_key"], $url_img);
+
+            echo "success uploaded";
+        } else {
+            echo "error upload";
+        }
+
+    }
+
+    die("died");
+
     $new_data = array(
         "name" => isset($_POST["name"]) ? htmlentities(trim($_POST["name"])) : "",
         "email" => isset($_POST["email"]) ? htmlentities(trim($_POST["email"])) : "",

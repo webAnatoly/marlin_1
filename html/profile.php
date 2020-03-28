@@ -69,12 +69,13 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
                                             <label for="formControlInputProfileImage1">Аватар</label>
                                             <input type="file" class="form-control" name="image" id="formControlInputProfileImage1">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <img src="img/no-user.jpg" alt="" class="img-fluid">
+                                        <img src="<?php echo $user["avatar"]; ?>" alt="" class="img-fluid">
                                     </div>
 
                                     <input type="hidden" name="edit_profile">
