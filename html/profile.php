@@ -137,8 +137,12 @@
 </div>
 <script>
     const alertUpdatedSuccess = document.getElementById("alertUpdatedSuccess");
+    const alertUpdatedError = document.getElementById("alertUpdatedError");
     if (alertUpdatedSuccess !== null) {
         setTimeout(() => alertUpdatedSuccess.style.display = "none", 2000);
+    }
+    if (alertUpdatedError !== null) {
+        setTimeout(() => alertUpdatedError.style.display = "none", 2000);
     }
 </script>
 </body>
