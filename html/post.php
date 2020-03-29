@@ -14,7 +14,7 @@ $isUser = (isset($user["user_id"]) && $user["user_id"] > 0);
  * Обработчик POST запросов
  */
 
-/* Регистрация. Обработка POST запроса регистрации нового пользователя */
+/* === Регистрация. Обработка POST запроса регистрации нового пользователя === */
 if (isset($_POST['registration'])) {
     session_start();
     unset($_SESSION['isErrorReg']);
@@ -87,7 +87,7 @@ if (isset($_POST['registration'])) {
     header("Location: register.php");
     exit;
 
-/* Авторизация. Обработка POST запроса авторизации пользователя */
+/* === Авторизация. Обработка POST запроса авторизации пользователя === */
 } elseif (isset($_POST['authorisation']) && $_POST['authorisation'] === "") {
 
     session_start();
@@ -140,7 +140,7 @@ if (isset($_POST['registration'])) {
         die("Unexpected error while authorisation <a href='index.php'>На главную</a>");
     }
 
-/* Обработка POST запроса редактирования профила */
+/* === Обработка POST запроса редактирования профила === */
 } elseif(isset($_POST["edit_profile"])) {
     session_start();
 
@@ -224,7 +224,7 @@ if (isset($_POST['registration'])) {
         exit;
     }
 
-/* Обработка POST запроса добавления нового комментария */
+/* === Обработка POST запроса добавления нового комментария === */
 } elseif (isset($_POST['add_new_comment'])) {
     session_start();
     // Обработка POST запроса добавления нового комментария
