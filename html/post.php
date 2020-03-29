@@ -148,14 +148,17 @@ if (isset($_POST['registration'])) {
     if ($_FILES["image"]["error"] === 2) { // быстрая проверка на превышение размера файла для удобства пользователей на основе скрытого инпута <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
 
         $_SESSION["isErrorFileUpload"]["message"] = "Превышен допустимый размер файла";
-        die("exceed max file size");
+        header("Location: profile.php");
+        exit;
 
     } elseif ($_FILES["image"]["error"] === 0) {
 
         // основная проверка на превышение размера файла
         $max_file_size = 30000;
         if ($_FILES["image"]["size"] > $max_file_size) {
-            die("exceeded max file size");
+            $_SESSION["isErrorFileUpload"]["message"] = "Exceeded max file size";
+            header("Location: profile.php");
+            exit;
         };
 
         // определение mime типа файла
@@ -164,7 +167,9 @@ if (isset($_POST['registration'])) {
 
         $allowed_types = array("png", "jpg", "jpeg", "bmp");
         if(!in_array($mime_type, $allowed_types)) {
-            die("not allowed picture type");
+            $_SESSION["isErrorFileUpload"]["message"] = "Недопустипый формат картинки";
+            header("Location: profile.php");
+            exit;
         }
 
         // генерация имени и сохранение файла

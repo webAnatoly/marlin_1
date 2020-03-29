@@ -38,6 +38,10 @@
                                 <div class="alert alert-success" role="alert" id="alertUpdatedSuccess">
                                     Профиль успешно обновлен
                                 </div>
+                            <?php elseif(isset($_SESSION["isErrorFileUpload"])): ?>
+                                <div class="alert alert-danger" role="alert" id="alertUpdatedError">
+                                    <?php echo $_SESSION["isErrorFileUpload"]["message"]; ?>
+                                </div>
                             <?php endif; ?>
 
                             <form action="post.php" method="post" enctype="multipart/form-data">
@@ -139,4 +143,4 @@
 </script>
 </body>
 </html>
-<?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"]); ?>
+<?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"], $_SESSION["isErrorFileUpload"]); ?>
