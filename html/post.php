@@ -1,4 +1,7 @@
 <?php
+
+use classes\User, classes\Comments;
+
 $config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
@@ -7,7 +10,7 @@ $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["p
 
 // Определяем залогинен ли пользователь, если да, то сохраняем его данные в массив
 $user = array();
-$user = classes\User::getData($_COOKIE["_auth_key"]);
+$user = User::getData($_COOKIE["_auth_key"]);
 $isUser = (isset($user["user_id"]) && $user["user_id"] > 0);
 
 /**
@@ -119,21 +122,21 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка существования пользователя
-    if (classes\User::isExists($auth_data["email"]) !== true) {
+    if (User::isExists($auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['email'] = "Пользователя с таким емейлом не существует";
         header("Location: login.php");
         exit;
     }
 
     // Проверка пароля
-    if (classes\User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
+    if (User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['password'] = "неверный пароль";
         header("Location: login.php");
         exit;
     }
 
     // Если всё ОК, то вызываем метод authorisation(), который генерит токен и ставит его в куку браузеру.
-    if (classes\User::authorisation($auth_data["email"]) === true) {
+    if (User::authorisation($auth_data["email"]) === true) {
         header("Location: index.php");
         exit;
     } else {
@@ -180,7 +183,7 @@ if (isset($_POST['registration'])) {
 
             // запись пути к файлу в базу
             $url_img = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $name;
-            \classes\User::insertFile($_COOKIE["_auth_key"], $url_img);
+            User::insertFile($_COOKIE["_auth_key"], $url_img);
             $_SESSION["isProfileUpdated"] = true;
             header("Location: profile.php");
             exit;
@@ -207,8 +210,8 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка емейла на дублирование.
-    if (classes\User::isExists($new_data["email"]) === true &&
-        classes\User::getData($_COOKIE["_auth_key"])["email"] !== $new_data["email"] // Если старый емейл совпадает с новым, то всё ОК.
+    if (User::isExists($new_data["email"]) === true &&
+        User::getData($_COOKIE["_auth_key"])["email"] !== $new_data["email"] // Если старый емейл совпадает с новым, то всё ОК.
     ) {
         $_SESSION['isErrorProfile']['email'] = "Емейл уже используется";
     }
@@ -218,7 +221,7 @@ if (isset($_POST['registration'])) {
         header("Location: profile.php");
         exit;
     } else { // Если ошибок не было, то обновляем данные
-        classes\User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
+        User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
         $_SESSION["isProfileUpdated"] = true;
         header("Location: profile.php");
         exit;
@@ -236,7 +239,7 @@ if (isset($_POST['registration'])) {
 
     // Если имя и сообщение не пусты, то записываем комментарий в базу
     if ($message !== "" && isset($user["user_id"])) {
-        if(classes\Comments::save($user["user_id"], $name, $message) === true) {
+        if(Comments::save($user["user_id"], $name, $message) === true) {
             unset($_SESSION['isErrorForm'], $_SESSION['tmp_fields']);
             echo ("success");
             exit;
