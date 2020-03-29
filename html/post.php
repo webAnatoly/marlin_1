@@ -159,11 +159,11 @@ if (isset($_POST['registration'])) {
             $_SESSION["isErrorFileUpload"]["message"] = "Exceeded max file size";
             header("Location: profile.php");
             exit;
-        };
+        }
 
         // определение mime типа файла
         $mime_type = mime_content_type($_FILES["image"]["tmp_name"]);
-        $mime_type = array_pop(explode("/", $mime_type));;
+        $mime_type = array_pop(explode("/", $mime_type));
 
         $allowed_types = array("png", "jpg", "jpeg", "bmp");
         if(!in_array($mime_type, $allowed_types)) {
