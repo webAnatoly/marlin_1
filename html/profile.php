@@ -75,7 +75,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <img src="<?php echo $user["avatar"]; ?>" alt="" class="img-fluid">
+                                        <?php if (isset($_SESSION["isProfileUpdated"])): ?>
+                                            <img src="<?php echo $user["avatar"] . "?" . rand(); ?>" alt="" class="img-fluid">
+                                        <?php else: ?>
+                                            <img src="<?php echo $user["avatar"]; ?>" alt="" class="img-fluid">
+                                        <?php endif; ?>
                                     </div>
 
                                     <input type="hidden" name="edit_profile">

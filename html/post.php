@@ -144,6 +144,7 @@ if (isset($_POST['registration'])) {
 } elseif(isset($_POST["edit_profile"])) {
     session_start();
 
+    // Обработка загрузки картинки профиля
     if ($_FILES["image"]["error"] === 2) { // быстрая проверка на превышение размера файла для удобства пользователей на основе скрытого инпута <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
 
         $_SESSION["isErrorFileUpload"]["message"] = "Превышен допустимый размер файла";
@@ -175,6 +176,9 @@ if (isset($_POST['registration'])) {
             // запись пути к файлу в базу
             $url_img = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $name;
             \classes\User::insertFile($_COOKIE["_auth_key"], $url_img);
+            $_SESSION["isProfileUpdated"] = true;
+            header("Location: profile.php");
+            exit;
 
         }
 
