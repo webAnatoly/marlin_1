@@ -166,6 +166,30 @@ class User
     }
 
     /**
+     * Меняет старый пароль на новый
+     * @param string $token токен пользователя приходящий в куках браузера
+     * @param string $current текущий пароль
+     * @param string $new новый пароль
+     * @param string $new_confirm подтверждение нового пароля
+     * @return bool
+     */
+    public static function changePassword($token, $current, $new, $new_confirm) {
+
+        if ($new !== $new_confirm) { return false; }
+
+        // Подключение к базе
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        // По полученному токену достаем из базы хеш пароля и сравниванем его с паролем в параметре $current,
+        // т.е. с паролем пришедшим из формы
+
+
+
+        return false;
+    }
+
+    /**
      * Сохраняет путь к картинке пользователя в базу
      * @param string $token токен пользователя, который приходит в куках браузера
      * @param string $path путь к файлу
