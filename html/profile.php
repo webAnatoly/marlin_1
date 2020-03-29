@@ -35,7 +35,7 @@
 
                         <div class="card-body">
                             <?php if (isset($_SESSION["isProfileUpdated"])): ?>
-                                <div class="alert alert-success" role="alert">
+                                <div class="alert alert-success" role="alert" id="alertUpdatedSuccess">
                                     Профиль успешно обновлен
                                 </div>
                             <?php endif; ?>
@@ -131,6 +131,12 @@
         </div>
     </main>
 </div>
+<script>
+    const alertUpdatedSuccess = document.getElementById("alertUpdatedSuccess");
+    if (alertUpdatedSuccess !== null) {
+        setTimeout(() => alertUpdatedSuccess.style.display = "none", 2000);
+    }
+</script>
 </body>
 </html>
 <?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"]); ?>
