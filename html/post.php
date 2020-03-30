@@ -236,35 +236,35 @@ if (isset($_POST['registration'])) {
     session_start();
 
     $passwords = array(
-        "old" => isset($_POST["old"]) ? htmlentities(trim($_POST["old"])) : "",
-        "new" => isset($_POST["new"]) ? htmlentities(trim($_POST["new"])) : "",
-        "new_confirm" => isset($_POST["new_confirm"]) ? htmlentities(trim($_POST["new_confirm"])) : "",
+        "current" => isset($_POST["current"]) ? htmlentities(trim($_POST["current"])) : "",
+        "password" => isset($_POST["password"]) ? htmlentities(trim($_POST["password"])) : "",
+        "password_confirmation" => isset($_POST["password_confirmation"]) ? htmlentities(trim($_POST["password_confirmation"])) : "",
     );
 
     // Валидация паролей
 
-    if ($passwords["old"] === "") {
-        $_SESSION["isErrorChangePassword"]["old"] = "Поле не должно быть пустым";
-    } elseif(mb_strlen($passwords['old']) < 4) {
-        $_SESSION["isErrorChangePassword"]["old"] = "Неверный пароль";
-    } elseif(mb_strlen($passwords['old']) > 255) {
-        $_SESSION["isErrorChangePassword"]["old"] = "Неверный пароль";
+    if ($passwords["current"] === "") {
+        $_SESSION["isErrorChangePassword"]["current"] = "Поле не должно быть пустым";
+    } elseif(mb_strlen($passwords["current"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["current"] = "Неверный пароль";
+    } elseif(mb_strlen($passwords["current"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["current"] = "Неверный пароль";
     }
 
-    if ($passwords["new"] === "") {
-        $_SESSION["isErrorChangePassword"]["new"] = "Поле не должно быть пустым";
-    } elseif (mb_strlen($passwords["new"]) < 4) {
-        $_SESSION["isErrorChangePassword"]["new"] = "Слишком короткий пароль";
-    } elseif (mb_strlen($passwords["new"]) > 255) {
-        $_SESSION["isErrorChangePassword"]["new"] = "Превышена допустимая длина пароля";
+    if ($passwords["password"] === "") {
+        $_SESSION["isErrorChangePassword"]["password"] = "Поле не должно быть пустым";
+    } elseif (mb_strlen($passwords["password"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Слишком короткий пароль";
+    } elseif (mb_strlen($passwords["password"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Превышена допустимая длина пароля";
     }
 
-    if ($passwords["new_confirm"] === "") {
-        $_SESSION["isErrorChangePassword"]["new_confirm"] = "Поле не должно быть пустым";
-    } elseif (mb_strlen($passwords["new_confirm"]) < 4) {
-        $_SESSION["isErrorChangePassword"]["new_confirm"] = "Слишком короткий пароль";
-    } elseif (mb_strlen($passwords["new_confirm"]) > 255) {
-        $_SESSION["isErrorChangePassword"]["new_confirm"] = "Превышена допустимая длина пароля";
+    if ($passwords["password_confirmation"] === "") {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Поле не должно быть пустым";
+    } elseif (mb_strlen($passwords["password_confirmation"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Слишком короткий пароль";
+    } elseif (mb_strlen($passwords["password_confirmation"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Превышена допустимая длина пароля";
     }
 
     if ($_SESSION["isErrorChangePassword"]) {
@@ -273,13 +273,13 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка совпадений новых паролей
-    if ($passwords["new"] !== $passwords["new_confirm"]) {
-        $_SESSION["isErrorChangePassword"]["new"] = "Пароли не совпадают";
-        $_SESSION["isErrorChangePassword"]["new_confirm"] = "Пароли не совпадают";
+    if ($passwords["password"] !== $passwords["password_confirmation"]) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Пароли не совпадают";
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Пароли не совпадают";
         header("Location: profile.php");
         exit;
     } else {
-        $isSuccess = User::changePassword($_COOKIE["_auth_key"], $passwords["old"], $passwords["new"], $passwords["new_confirm"]);
+        $isSuccess = User::changePassword($_COOKIE["_auth_key"], $passwords["current"], $passwords["password"], $passwords["password_confirmation"]);
         if ($isSuccess) {
             $_SESSION["isSuccessChangePassword"]["message"] = "Пароль успешно обновлен";
         } else {

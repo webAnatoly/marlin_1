@@ -102,27 +102,56 @@
                         <div class="card-header"><h3>Безопасность</h3></div>
 
                         <div class="card-body">
-                            <div class="alert alert-success" role="alert">
-                                Пароль успешно обновлен
-                            </div>
+                            <?php if ( isset($_SESSION["isSuccessChangePassword"]) ): ?>
+                                <div class="alert alert-success" role="alert">
+                                    Пароль успешно обновлен
+                                </div>
+                            <?php elseif(isset($_SESSION["isErrorChangePassword"]["message"])): ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?php echo $_SESSION["isErrorChangePassword"]["message"]; ?>
+                                </div>
+                            <?php endif; ?>
 
-                            <form action="/profile/password" method="post">
+                            <form action="post.php" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="formControlInputProfilePasswordCurrent">Current password</label>
-                                            <input type="password" name="current" class="form-control" id="formControlInputProfilePasswordCurrent">
+                                            <?php if ( isset($_SESSION["isErrorChangePassword"]["current"]) ): ?>
+                                                <input type="password" class="form-control is-invalid" name="current" id="formControlInputProfilePasswordCurrent" value="">
+                                                <span class="text text-danger">
+                                                    <? echo $_SESSION["isErrorChangePassword"]["current"] ?>
+                                                </span>
+                                            <? else: ?>
+                                                <input type="password" name="current" class="form-control" id="formControlInputProfilePasswordCurrent">
+                                            <? endif; ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="formControlInputProfilePasswordNew">New password</label>
-                                            <input type="password" name="password" class="form-control" id="formControlInputProfilePasswordNew">
+                                            <?php if ( isset($_SESSION["isErrorChangePassword"]["password"])): ?>
+                                                <input type="password" name="password" class="form-control is-invalid" id="formControlInputProfilePasswordNew">
+                                                <span class="text text-danger">
+                                                    <? echo $_SESSION["isErrorChangePassword"]["password"] ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <input type="password" name="password" class="form-control" id="formControlInputProfilePasswordNew">
+                                            <?php endif; ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="formControlInputProfilePasswordConfirm">Password confirmation</label>
-                                            <input type="password" name="password_confirmation" class="form-control" id="formControlInputProfilePasswordConfirm">
+                                            <?php if ($_SESSION["isErrorChangePassword"]["password_confirmation"]): ?>
+                                                <input type="password" name="password_confirmation" class="form-control is-invalid" id="formControlInputProfilePasswordConfirm">
+                                                <span class="text text-danger">
+                                                    <? echo $_SESSION["isErrorChangePassword"]["password_confirmation"] ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <input type="password" name="password_confirmation" class="form-control" id="formControlInputProfilePasswordConfirm">
+                                            <?php endif; ?>
                                         </div>
+
+                                        <input type="hidden" name="change_password">
 
                                         <button class="btn btn-success">Submit</button>
                                     </div>
@@ -147,4 +176,5 @@
 </script>
 </body>
 </html>
-<?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"], $_SESSION["isErrorFileUpload"]); ?>
+<?php unset($_SESSION['isErrorProfile'], $_SESSION["isProfileUpdated"], $_SESSION["isErrorFileUpload"],
+    $_SESSION["isErrorChangePassword"], $_SESSION["isSuccessChangePassword"], $_SESSION["isErrorChangePassword"]); ?>
