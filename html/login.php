@@ -19,7 +19,7 @@ spl_autoload_register("myAutoloader");
 </head>
 <body>
     <div id="app">
-        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/view/nav.php"?>
+        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/View/nav.php" ?>
 
         <main class="py-4">
             <div class="container">

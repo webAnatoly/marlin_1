@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="app">
-    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/view/nav.php";
+    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/View/nav.php";
 
         // Для гостей показываем сообщение о неоходимости авторизироваться и выходим
         if ($isUser !== true) {
