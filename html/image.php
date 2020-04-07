@@ -7,3 +7,6 @@ var_dump(getimagesize($_SERVER["DOCUMENT_ROOT"] . "/uploads/avatar_8.png"));
 
 <h1>Работа с полупрозрачными цветами</h1>
 <img src="View/semitransp.php" alt="полупрозрачный рисунок">
+
+<h1>Изменение пера</h1>
+<img src="View/pen.php?<?php echo time(); ?>" alt="picture">
