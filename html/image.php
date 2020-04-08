@@ -10,3 +10,9 @@ var_dump(getimagesize($_SERVER["DOCUMENT_ROOT"] . "/uploads/avatar_8.png"));
 
 <h1>Изменение пера</h1>
 <img src="View/pen.php?<?php echo time(); ?>" alt="picture">
+
+<h1>Пример работы с TTF шрифтом</h1>
+<img src="View/ttf.php?<?php echo time(); ?>" alt="picture">
+
+
+<footer style="height: 100px"></footer>
