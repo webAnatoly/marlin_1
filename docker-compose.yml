@@ -42,5 +42,10 @@ services:
         #     MYSQL_PASSWORD: test
         #     MYSQL_ROOT_PASSWORD: test
 
-
+    memchached:
+        container_name: memcached_1
+        image: memcached:1.6
+        ports:
+            - "11211:11211"
+        restart: always # [TO DO] Загуглить что это значит
 
