@@ -1,7 +1,12 @@
 <?php ## Отправка данных методом POST с помощью curl
 
 // Задаем адрес удаленного сервера
-$curl = curl_init("http://".$_SERVER['HTTP_HOST']."/handler.php");
+//$curl = curl_init("http://".$_SERVER['HTTP_HOST']."/handler.php");
+$curl = curl_init("http://localhost:80/handler.php"); // 80 это порт внутри докер контейнера
+
+// Устанавливаем реферер
+$useragent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1";
+curl_setopt($curl, CURLOPT_USERAGENT, $useragent);
 
 // Передача данных осуществляется методом POST
 curl_setopt($curl, CURLOPT_POST, true);
