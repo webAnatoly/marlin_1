@@ -12,6 +12,24 @@ try {
     var_dump($e);
     echo "Cannot connect to database";
 }
+?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Форма</title>
+    <meta charset='utf-8'>
+</head>
+<body>
+<form action='handler.php' method='post'>
+    Имя : <input type='text' name='name'><br />
+    Пароль : <input type='text' name='pass'><br />
+    <input type='submit' value='Отправить'>
+</form>
+</body>
+</html>
+
+<?php
 
 // Выполняем запрос
 $query = "SELECT VERSION() AS version";
