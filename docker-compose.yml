@@ -45,6 +45,8 @@ services:
     memchached:
         container_name: memcached_1
         image: memcached:1.6
+        command:        # опции для сервиса memcached
+            - '-m 16'   # установка размера выделяемой памяти (по умолчанию 64 мб)
         ports:
             - "11211:11211"
         restart: always # [TO DO] Загуглить что это значит
