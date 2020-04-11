@@ -6,6 +6,19 @@ spl_autoload_register("myAutoloader");
 $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 $db = $config->db;
 
+$m = new Memcached();
+$m->addServer('memcached_1', 11211);
+
+try {
+    $m->set("key", "asdf2222");
+    $m->increment("number", 1, 0);
+    var_dump($m->get("key"));
+    var_dump($m->getResultMessage());
+    var_dump($m->getResultCode());
+} catch (Throwable $e) {
+    echo $e->getMessage();
+}
+
 try {
     $pdo = new PDO("mysql:host={$db['host']};dbname={$db['database']}", $db["user"], $db["password"]);
 } catch (PDOException $e) {
