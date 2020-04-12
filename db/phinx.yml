@@ -18,12 +18,12 @@ environments:
 
     development:
         adapter: mysql
-        host: localhost
-        name: development_db
+        host: mysql_my_marlin_project_1
+        name: forum
         user: root
-        pass: ''
+        pass: 'test'
         port: 3306
-        charset: utf8
+        charset: utf8mb4
 
     testing:
         adapter: mysql

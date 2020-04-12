@@ -31,6 +31,13 @@ class CreateUserTable extends AbstractMigration
      */
     public function change()
     {
-
+// Создание таблицы пользователей
+        $table = $this->table('users_test');
+        $table
+            ->addColumn('first_name', 'string', ['limit' => 50, 'null' => false])
+            ->addColumn('last_name', 'string')
+            ->addColumn('created_at', 'datetime')
+            ->addColumn('updated_at', 'datetime')
+            ->create();
     }
 }
