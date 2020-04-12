@@ -11,7 +11,6 @@ $m->addServer('memcached_1', 11211);
 
 try {
     $m->set("key", "asdf2222");
-    $m->increment("number", 1, 0);
     var_dump($m->get("key"));
     var_dump($m->getResultMessage());
     var_dump($m->getResultCode());
