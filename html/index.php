@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 
@@ -24,6 +25,17 @@ try {
     var_dump($e);
     echo "Cannot connect to database";
 }
+
+# Использование компонента Monolog
+$log = new Monolog\Logger('name');
+$handler = new Monolog\Handler\StreamHandler($_SERVER['DOCUMENT_ROOT'] . '/logs/app.log', Monolog\Logger::WARNING);
+$log->pushHandler($handler);
+$log->warning('Предупреждение');
+
+
+
+//$log = date('Y-m-d H:i:s') . " тестовая лог запись";
+//file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/logs/app.log', $log . PHP_EOL, FILE_APPEND);
 ?>
 
 <!DOCTYPE html>
