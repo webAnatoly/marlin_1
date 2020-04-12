@@ -55,51 +55,6 @@ $log->warning('Предупреждение');
     Пароль : <input type='text' name='pass'><br />
     <input type='submit' value='Отправить'>
 </form>
-
-ordering by creation time
-PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php:80
-Stack trace:
-#0 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(80): PDO->__construct('mysql:host=mysq...', 'root', 'test', Array)
-#1 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/MysqlAdapter.php(130): Phinx\Db\Adapter\PdoAdapter->createPdoConnection('mysql:host=mysq...', 'root', 'test', Array)
-#2 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(149): Phinx\Db\Adapter\MysqlAdapter->connect()
-#3 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(213): Phinx\Db\Adapter\PdoAdapter->getConnection()
-#4 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(232): Phinx\Db\Adapter\PdoAdapter->query('SELECT * FROM `...')
-#5 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(377): Phinx\Db\Adapter\PdoAdapter->fetchAll('SELECT * FROM `...')
-#6 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(349): Phinx\Db\Adapter\PdoAdapter->getVersionLog()
-#7 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/AdapterWrapper.php(212): Phinx\Db\Adapter\PdoAdapter->getVersions()
-#8 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Migration/Manager/Environment.php(259): Phinx\Db\Adapter\AdapterWrapper->getVersions()
-#9 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Migration/Manager.php(306): Phinx\Migration\Manager\Environment->getVersions()
-#10 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Console/Command/Migrate.php(123): Phinx\Migration\Manager->migrate('development', NULL, false)
-#11 /var/www/html/vendor/symfony/console/Command/Command.php(255): Phinx\Console\Command\Migrate->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#12 /var/www/html/vendor/symfony/console/Application.php(912): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#13 /var/www/html/vendor/symfony/console/Application.php(264): Symfony\Component\Console\Application->doRunCommand(Object(Phinx\Console\Command\Migrate), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#14 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Console/PhinxApplication.php(69): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#15 /var/www/html/vendor/symfony/console/Application.php(140): Phinx\Console\PhinxApplication->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#16 /var/www/html/vendor/robmorgan/phinx/bin/phinx(28): Symfony\Component\Console\Application->run()
-#17 {main}
-
-Next InvalidArgumentException: There was a problem connecting to the database: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php:83
-Stack trace:
-#0 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/MysqlAdapter.php(130): Phinx\Db\Adapter\PdoAdapter->createPdoConnection('mysql:host=mysq...', 'root', 'test', Array)
-#1 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(149): Phinx\Db\Adapter\MysqlAdapter->connect()
-#2 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(213): Phinx\Db\Adapter\PdoAdapter->getConnection()
-#3 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(232): Phinx\Db\Adapter\PdoAdapter->query('SELECT * FROM `...')
-#4 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(377): Phinx\Db\Adapter\PdoAdapter->fetchAll('SELECT * FROM `...')
-#5 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/PdoAdapter.php(349): Phinx\Db\Adapter\PdoAdapter->getVersionLog()
-#6 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Db/Adapter/AdapterWrapper.php(212): Phinx\Db\Adapter\PdoAdapter->getVersions()
-#7 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Migration/Manager/Environment.php(259): Phinx\Db\Adapter\AdapterWrapper->getVersions()
-#8 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Migration/Manager.php(306): Phinx\Migration\Manager\Environment->getVersions()
-#9 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Console/Command/Migrate.php(123): Phinx\Migration\Manager->migrate('development', NULL, false)
-#10 /var/www/html/vendor/symfony/console/Command/Command.php(255): Phinx\Console\Command\Migrate->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#11 /var/www/html/vendor/symfony/console/Application.php(912): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#12 /var/www/html/vendor/symfony/console/Application.php(264): Symfony\Component\Console\Application->doRunCommand(Object(Phinx\Console\Command\Migrate), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#13 /var/www/html/vendor/robmorgan/phinx/src/Phinx/Console/PhinxApplication.php(69): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#14 /var/www/html/vendor/symfony/console/Application.php(140): Phinx\Console\PhinxApplication->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
-#15 /var/www/html/vendor/robmorgan/phinx/bin/phinx(28): Symfony\Component\Console\Application->run()
-#16 {main}
-root@efcc8eb6beb8:/var/www/db#
-
-
 </body>
 </html>
 
