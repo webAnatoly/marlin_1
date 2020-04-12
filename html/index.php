@@ -1,6 +1,11 @@
 <?php
 session_start();
+/* Подключение автозагрузчика Composer
+ * Его включение при помощи директив require или require_once предоставляет доступ ко всем компонентам,
+ * загруженным посредством Composer*/
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
+/* Подключение моего автозагрузчика для моих классов */
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 
