@@ -37,6 +37,41 @@ $handler = new Monolog\Handler\StreamHandler($_SERVER['DOCUMENT_ROOT'] . '/logs/
 $log->pushHandler($handler);
 $log->warning('Предупреждение');
 
+//Задача: Есть три переменные
+//- если только одна истинна, она выводится и к ней прибавляется число 1
+//- если только 2 истинных, оба выводятся отдельно и к обеим приавляется число 5
+//- если все три истинны, все выводятся по отдельности и ко всем прибавляется число 12
+
+function checker ($vars = [false, false, false])
+{
+    $tmp = [];
+    $result = [];
+
+    foreach ($vars as $v) {
+        if ($v) {
+            $tmp[] = $v;
+        }
+    }
+
+    $tmp_length = count($tmp);
+
+    if ($tmp_length === 1) {
+        $result = [$tmp[0] + 1];
+    } elseif ($tmp_length === 2 ) {
+        $result = [$tmp[0] + 5, $tmp[1] + 5];
+    } elseif ($tmp_length === 3 ) {
+        $result = [$tmp[0] + 12, $tmp[1] + 12, $tmp[2] + 12];
+    }
+
+    return $result;
+}
+
+echo "<p>result: </p>";
+var_dump(checker([1,0,0])); // 2
+var_dump(checker([1,2,0])); // 6, 7
+var_dump(checker([1,2,3])); // 13, 14, 15
+var_dump(checker([1,0,3])); // 6, 8
+
 
 
 //$log = date('Y-m-d H:i:s') . " тестовая лог запись";
