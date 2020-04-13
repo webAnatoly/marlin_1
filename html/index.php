@@ -53,14 +53,16 @@ function checker ($vars = [false, false, false])
         }
     }
 
-    $tmp_length = count($tmp);
-
-    if ($tmp_length === 1) {
-        $result = [$tmp[0] + 1];
-    } elseif ($tmp_length === 2 ) {
-        $result = [$tmp[0] + 5, $tmp[1] + 5];
-    } elseif ($tmp_length === 3 ) {
-        $result = [$tmp[0] + 12, $tmp[1] + 12, $tmp[2] + 12];
+    switch (count($tmp)) {
+        case 1:
+            $result = [$tmp[0] + 1];
+            break;
+        case 2:
+            $result = [$tmp[0] + 5, $tmp[1] + 5];
+            break;
+        case 3:
+            $result = [$tmp[0] + 12, $tmp[1] + 12, $tmp[2] + 12];
+            break;
     }
 
     return $result;
