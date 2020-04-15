@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e2ba03681236c4b5f2d67e925b96855",
+    "content-hash": "cbcbc94c60dfd709896dc7a6440dd79d",
     "packages": [
         {
             "name": "cakephp/collection",
@@ -1128,6 +1128,48 @@
                 }
             ],
             "time": "2020-03-30T11:42:42+00:00"
+        },
+        {
+            "name": "webanatorly/pagination",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webAnatoly/pagination.git",
+                "reference": "d1ccd435d65fe42662012743d9fab6870900cab5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webAnatoly/pagination/zipball/d1ccd435d65fe42662012743d9fab6870900cab5",
+                "reference": "d1ccd435d65fe42662012743d9fab6870900cab5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pagination\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anatoly Demianov",
+                    "email": "tolik.demianov@gmail.com"
+                }
+            ],
+            "description": "A library to split results into multiple pages",
+            "homepage": "https://github.com/webAnatoly/pagination",
+            "keywords": [
+                "pager",
+                "pagination",
+                "paginator"
+            ],
+            "time": "2020-04-15T14:22:22+00:00"
         }
     ],
     "packages-dev": [],
