@@ -8,7 +8,7 @@
  * @subpackage WebPager\View
  */
 
-namespace WebPager;
+namespace Pagination;
 
 /**
  * Абстрактный класс представления постраничной навигации

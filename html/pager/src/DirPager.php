@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WebPager;
+namespace Pagination;
 
 
 class DirPager extends Pager

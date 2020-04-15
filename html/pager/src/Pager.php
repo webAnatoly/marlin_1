@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WebPager;
+namespace Pagination;
 
 abstract class Pager
 {

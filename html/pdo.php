@@ -36,8 +36,8 @@ try {
         'root',
         'test',
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-    $obj = new WebPager\PdoPager(
-        new WebPager\PagesList(),
+    $obj = new Pagination\PdoPager(
+        new Pagination\PagesList(),
         $pdo,
         'languages');
 // Содержимое текущей страницы

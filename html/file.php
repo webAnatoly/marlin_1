@@ -30,8 +30,8 @@ spl_autoload_register(
         }
     }
 );
-$obj = new WebPager\FilePager(
-    new WebPager\PagesList(),
+$obj = new Pagination\FilePager(
+    new Pagination\PagesList(),
     'uploads/largetextfile.txt');
 // Содержимое текущей страницы
 foreach($obj->getItems() as $line) {

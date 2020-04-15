@@ -1,5 +1,5 @@
 <?php
-namespace WebPager;
+namespace Pagination;
 
 class ItemsRange extends View
 {

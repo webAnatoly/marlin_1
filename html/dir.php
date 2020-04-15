@@ -1,6 +1,6 @@
 <?php
 
-namespace WebPager;
+namespace Pagination;
 
 ## Постраничная навигация по папке
 // Временная автозагрузка классов
@@ -33,8 +33,8 @@ spl_autoload_register(
         }
     }
 );
-$obj = new \WebPager\DirPager(
-    new \WebPager\PagesList(),
+$obj = new \Pagination\DirPager(
+    new \Pagination\PagesList(),
     'uploads',
     1,
     2
