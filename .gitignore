@@ -4,6 +4,7 @@ vendor
 /src/
 /mysql/
 /dump/
+/html/js/libs/*
 package.json
 package-lock.json
 gulpfile.js
