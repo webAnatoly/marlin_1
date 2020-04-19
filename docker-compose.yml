@@ -8,6 +8,7 @@ services:
             - db
         volumes:
             - ./html:/var/www/html
+            - ./db:/var/www/db/ # папка для migrations
         environment:
             XDEBUG_CONFIG: remote_host=192.168.1.39
 

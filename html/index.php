@@ -1,5 +1,11 @@
 <?php
 session_start();
+/* Подключение автозагрузчика Composer
+ * Его включение при помощи директив require или require_once предоставляет доступ ко всем компонентам,
+ * загруженным посредством Composer*/
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
+/* Подключение моего автозагрузчика для моих классов */
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
 
@@ -11,7 +17,6 @@ $m->addServer('memcached_1', 11211);
 
 try {
     $m->set("key", "asdf2222");
-    $m->increment("number", 1, 0);
     var_dump($m->get("key"));
     var_dump($m->getResultMessage());
     var_dump($m->getResultCode());
@@ -25,6 +30,54 @@ try {
     var_dump($e);
     echo "Cannot connect to database";
 }
+
+# Использование компонента Monolog
+$log = new Monolog\Logger('name');
+$handler = new Monolog\Handler\StreamHandler($_SERVER['DOCUMENT_ROOT'] . '/logs/app.log', Monolog\Logger::WARNING);
+$log->pushHandler($handler);
+$log->warning('Предупреждение');
+
+//Задача: Есть три переменные
+//- если только одна истинна, она выводится и к ней прибавляется число 1
+//- если только 2 истинных, оба выводятся отдельно и к обеим приавляется число 5
+//- если все три истинны, все выводятся по отдельности и ко всем прибавляется число 12
+
+function checker ($vars = [false, false, false])
+{
+    $tmp = [];
+    $result = [];
+
+    foreach ($vars as $v) {
+        if ($v) {
+            $tmp[] = $v;
+        }
+    }
+
+    switch (count($tmp)) {
+        case 1:
+            $result = [$tmp[0] + 1];
+            break;
+        case 2:
+            $result = [$tmp[0] + 5, $tmp[1] + 5];
+            break;
+        case 3:
+            $result = [$tmp[0] + 12, $tmp[1] + 12, $tmp[2] + 12];
+            break;
+    }
+
+    return $result;
+}
+
+echo "<p>result: </p>";
+var_dump(checker([1,0,0])); // 2
+var_dump(checker([1,2,0])); // 6, 7
+var_dump(checker([1,2,3])); // 13, 14, 15
+var_dump(checker([1,0,3])); // 6, 8
+
+
+
+//$log = date('Y-m-d H:i:s') . " тестовая лог запись";
+//file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/logs/app.log', $log . PHP_EOL, FILE_APPEND);
 ?>
 
 <!DOCTYPE html>
