@@ -1,4 +1,7 @@
 <?php
+
+use classes\User, classes\Comments;
+
 $config = require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/myAutoloader.php';
 spl_autoload_register("myAutoloader");
@@ -7,7 +10,7 @@ $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["p
 
 // Определяем залогинен ли пользователь, если да, то сохраняем его данные в массив
 $user = array();
-$user = classes\User::getData($_COOKIE["_auth_key"]);
+$user = User::getData($_COOKIE["_auth_key"]);
 $isUser = (isset($user["user_id"]) && $user["user_id"] > 0);
 
 /**
@@ -119,28 +122,28 @@ if (isset($_POST['registration'])) {
     }
 
     // Проверка существования пользователя
-    if (classes\User::isExists($auth_data["email"]) !== true) {
+    if (User::isExists($auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['email'] = "Пользователя с таким емейлом не существует";
         header("Location: login.php");
         exit;
     }
 
     // Проверка пароля
-    if (classes\User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
+    if (User::isCorrectPassword($auth_data["password"], $auth_data["email"]) !== true) {
         $_SESSION['isErrorAuth']['password'] = "неверный пароль";
         header("Location: login.php");
         exit;
     }
 
     // Если всё ОК, то вызываем метод authorisation(), который генерит токен и ставит его в куку браузеру.
-    if (classes\User::authorisation($auth_data["email"]) === true) {
+    if (User::authorisation($auth_data["email"]) === true) {
         header("Location: index.php");
         exit;
     } else {
         die("Unexpected error while authorisation <a href='index.php'>На главную</a>");
     }
 
-/* === Обработка POST запроса редактирования профила === */
+/* === Обработка POST запроса редактирования профиля === */
 } elseif(isset($_POST["edit_profile"])) {
     session_start();
 
@@ -166,7 +169,7 @@ if (isset($_POST['registration'])) {
         $mime_type = array_pop(explode("/", $mime_type));
 
         $allowed_types = array("png", "jpg", "jpeg", "bmp");
-        if(!in_array($mime_type, $allowed_types)) {
+        if (!in_array($mime_type, $allowed_types)) {
             $_SESSION["isErrorFileUpload"]["message"] = "Недопустипый формат картинки";
             header("Location: profile.php");
             exit;
@@ -180,7 +183,7 @@ if (isset($_POST['registration'])) {
 
             // запись пути к файлу в базу
             $url_img = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $name;
-            \classes\User::insertFile($_COOKIE["_auth_key"], $url_img);
+            User::insertFile($_COOKIE["_auth_key"], $url_img);
             $_SESSION["isProfileUpdated"] = true;
             header("Location: profile.php");
             exit;
@@ -195,20 +198,24 @@ if (isset($_POST['registration'])) {
     );
 
     // Проверка обязательных полей на пустоту
-    if (mb_strlen($new_data["name"]) < 1) { $_SESSION['isErrorProfile']['name'] = "Поле не должно быть пустым"; }
-    if (mb_strlen($new_data["name"]) > 255) { $_SESSION['isErrorProfile']['name'] = "Превышена допустимая длина"; }
+    if (mb_strlen($new_data["name"]) < 1) {
+        $_SESSION['isErrorProfile']['name'] = "Поле не должно быть пустым";
+    }
+    if (mb_strlen($new_data["name"]) > 255) {
+        $_SESSION['isErrorProfile']['name'] = "Превышена допустимая длина";
+    }
 
     // Валидация емейла
-    if (    filter_var($new_data['email'], FILTER_VALIDATE_EMAIL) === false
-            || mb_strlen($new_data['email']) > 255  ) {
+    if (filter_var($new_data['email'], FILTER_VALIDATE_EMAIL) === false
+        || mb_strlen($new_data['email']) > 255) {
 
         $_SESSION['isErrorProfile']['email'] = "Пустой или некорректный емейл";
 
     }
 
     // Проверка емейла на дублирование.
-    if (classes\User::isExists($new_data["email"]) === true &&
-        classes\User::getData($_COOKIE["_auth_key"])["email"] !== $new_data["email"] // Если старый емейл совпадает с новым, то всё ОК.
+    if (User::isExists($new_data["email"]) === true &&
+        User::getData($_COOKIE["_auth_key"])["email"] !== $new_data["email"] // Если старый емейл совпадает с новым, то всё ОК.
     ) {
         $_SESSION['isErrorProfile']['email'] = "Емейл уже используется";
     }
@@ -218,8 +225,66 @@ if (isset($_POST['registration'])) {
         header("Location: profile.php");
         exit;
     } else { // Если ошибок не было, то обновляем данные
-        classes\User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
+        User::updateData($_COOKIE["_auth_key"], $new_data["name"], $new_data["email"]);
         $_SESSION["isProfileUpdated"] = true;
+        header("Location: profile.php");
+        exit;
+    }
+
+/* === Обработка POST запроса изменения пароля === */
+} elseif(isset($_POST["change_password"])) {
+    session_start();
+
+    $passwords = array(
+        "current" => isset($_POST["current"]) ? htmlentities(trim($_POST["current"])) : "",
+        "password" => isset($_POST["password"]) ? htmlentities(trim($_POST["password"])) : "",
+        "password_confirmation" => isset($_POST["password_confirmation"]) ? htmlentities(trim($_POST["password_confirmation"])) : "",
+    );
+
+    // Валидация паролей
+
+    if ($passwords["current"] === "") {
+        $_SESSION["isErrorChangePassword"]["current"] = "Поле не должно быть пустым";
+    } elseif(mb_strlen($passwords["current"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["current"] = "Неверный пароль";
+    } elseif(mb_strlen($passwords["current"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["current"] = "Неверный пароль";
+    }
+
+    if ($passwords["password"] === "") {
+        $_SESSION["isErrorChangePassword"]["password"] = "Поле не должно быть пустым";
+    } elseif (mb_strlen($passwords["password"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Слишком короткий пароль";
+    } elseif (mb_strlen($passwords["password"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Превышена допустимая длина пароля";
+    }
+
+    if ($passwords["password_confirmation"] === "") {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Поле не должно быть пустым";
+    } elseif (mb_strlen($passwords["password_confirmation"]) < 4) {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Слишком короткий пароль";
+    } elseif (mb_strlen($passwords["password_confirmation"]) > 255) {
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Превышена допустимая длина пароля";
+    }
+
+    if ($_SESSION["isErrorChangePassword"]) {
+        header("Location: profile.php");
+        exit;
+    }
+
+    // Проверка совпадений новых паролей
+    if ($passwords["password"] !== $passwords["password_confirmation"]) {
+        $_SESSION["isErrorChangePassword"]["password"] = "Пароли не совпадают";
+        $_SESSION["isErrorChangePassword"]["password_confirmation"] = "Пароли не совпадают";
+        header("Location: profile.php");
+        exit;
+    } else {
+        $isSuccess = User::changePassword($_COOKIE["_auth_key"], $passwords["current"], $passwords["password"], $passwords["password_confirmation"]);
+        if ($isSuccess) {
+            $_SESSION["isSuccessChangePassword"]["message"] = "Пароль успешно обновлен";
+        } else {
+            $_SESSION["isErrorChangePassword"]["message"] = "Ошибка обновления пароля";
+        }
         header("Location: profile.php");
         exit;
     }
@@ -236,7 +301,7 @@ if (isset($_POST['registration'])) {
 
     // Если имя и сообщение не пусты, то записываем комментарий в базу
     if ($message !== "" && isset($user["user_id"])) {
-        if(classes\Comments::save($user["user_id"], $name, $message) === true) {
+        if(Comments::save($user["user_id"], $name, $message) === true) {
             unset($_SESSION['isErrorForm'], $_SESSION['tmp_fields']);
             echo ("success");
             exit;

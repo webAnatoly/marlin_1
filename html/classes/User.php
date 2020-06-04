@@ -166,6 +166,66 @@ class User
     }
 
     /**
+     * Меняет старый пароль на новый
+     * @param string $token токен пользователя приходящий в куках браузера
+     * @param string $current текущий пароль
+     * @param string $password новый пароль
+     * @param string $password_confirmation подтверждение нового пароля
+     * @return bool
+     */
+    public static function changePassword($token, $current, string $password, string $password_confirmation) {
+
+        if ($password !== $password_confirmation) { return false; }
+
+        // Подключение к базе
+        $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $mysql = mysqli_connect($config->db["host"], $config->db["user"], $config->db["password"], $config->db["database"]);
+
+        // По полученному токену достаем из базы хеш текущего пароля и сравниванем его с паролем в параметре $current,
+        // т.е. с паролем пришедшим из формы
+        if ($stmt = $mysql->prepare("SELECT pass_hash, email FROM Users WHERE token=?")) {
+            $stmt->bind_param("s", $token );
+            $stmt->execute();
+            $stmt->bind_result($fetched_current_hash, $user_email);
+            $stmt->fetch();
+            $stmt->close();
+        } else {
+            return false;
+        }
+
+        // Если присланный текущий пароль не совпадает с текущим паролем из базы, то выходим
+        if( !password_verify($current, $fetched_current_hash) ) { return false; };
+
+        // Сохраняем новый пароль
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        if ($stmt = $mysql->prepare("UPDATE Users SET pass_hash=? WHERE token=?")) {
+            $stmt->bind_param("ss", $hash, $token);
+            $stmt->execute();
+            $stmt->close();
+        } else {
+            die ("database error connection");
+        }
+
+
+        // Проверка обновился ли пароль
+        if ($stmt = $mysql->prepare("SELECT pass_hash FROM Users WHERE token=?")) {
+            $stmt->bind_param("s", $token );
+            $stmt->execute();
+            $stmt->bind_result($fetched_new_password_hash);
+            $stmt->fetch();
+            $stmt->close();
+        } else {
+            return false;
+        }
+        $mysql->close();
+
+        if( password_verify($password, $fetched_new_password_hash) ) { return true; }
+
+        return false;
+    }
+
+    /**
      * Сохраняет путь к картинке пользователя в базу
      * @param string $token токен пользователя, который приходит в куках браузера
      * @param string $path путь к файлу
